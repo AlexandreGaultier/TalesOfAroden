@@ -5,6 +5,7 @@ import {
   isAtLocation,
   mapSubZones,
   openSubZoneModal,
+  reachableSubZoneIds,
 } from '../../game/gameSession'
 import SubZoneCard from './SubZoneCard.vue'
 
@@ -39,6 +40,7 @@ const mapStyle = computed(() => ({
         :key="sz.id"
         :sub-zone="sz"
         :active="isAtLocation(sz.id)"
+        :reachable="reachableSubZoneIds.has(sz.id)"
         @open="openSubZoneModal"
       />
     </div>

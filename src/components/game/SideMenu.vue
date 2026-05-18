@@ -7,10 +7,11 @@ import {
   playerVersion,
   restartGame,
 } from '../../game/gameSession'
-import { getPlayer } from '../../game/playerStore'
+import { getPlayer, playerRevision } from '../../game/playerStore'
 
 const player = computed(() => {
   playerVersion.value
+  playerRevision.value
   return getPlayer()
 })
 </script>

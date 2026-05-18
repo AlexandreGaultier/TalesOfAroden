@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   closeCombat,
   confirmPlayerRoll,
@@ -13,8 +13,8 @@ import {
   session,
   toggleDieLock,
 } from '../../combat/combatStore'
-import { INITIATIVE_DURATION_MS } from '../../combat/engine'
-import { notifyPlayerUpdate } from '../../game/gameSession'
+import { notifyPlayerUpdate, isPlayerDead } from '../../game/gameSession'
+import CombatInitiativeRoll from './CombatInitiativeRoll.vue'
 import { countSymbolsFromDice, formatSymbolCounts } from '../../combat/symbols'
 import AbilityReferenceList from './AbilityReferenceList.vue'
 import CombatDieFace from './CombatDieFace.vue'
@@ -23,26 +23,16 @@ import CombatSymbolLegend from './CombatSymbolLegend.vue'
 import { formatPatternText } from '../../combat/formatPattern'
 
 const showInitiative = ref(true)
-let initiativeTimer: ReturnType<typeof setTimeout> | null = null
 
 const s = computed(() => session.value)
 
 watch(
   () => s.value?.initiativeShownAt,
   (at) => {
-    if (initiativeTimer) clearTimeout(initiativeTimer)
-    if (!at) return
-    showInitiative.value = true
-    initiativeTimer = setTimeout(() => {
-      showInitiative.value = false
-    }, INITIATIVE_DURATION_MS)
+    if (at) showInitiative.value = true
   },
   { immediate: true },
 )
-
-onUnmounted(() => {
-  if (initiativeTimer) clearTimeout(initiativeTimer)
-})
 
 const phase = computed(() => s.value?.phase ?? 'ended')
 
@@ -107,7 +97,7 @@ function handleClose(): void {
         <h2>{{ s.context.introTitle }}</h2>
       </div>
       <button
-        v-if="phase === 'ended'"
+        v-if="phase === 'ended' && !isPlayerDead"
         type="button"
         class="combat-overlay__close"
         @click="handleClose"
@@ -174,28 +164,14 @@ function handleClose(): void {
         <section class="combat-actions-panel">
           <CombatSymbolLegend />
 
-          <div
+          <CombatInitiativeRoll
             v-if="showInitiative && s.initiative && phase === 'initiative'"
-            class="combat-initiative"
-          >
-            <p class="combat-initiative__title">Qui attaque en premier ? (1d20)</p>
-            <div class="combat-initiative__scores">
-              <div
-                class="combat-initiative__score"
-                :class="{ 'combat-initiative__score--lead': s.initiative.hero >= s.initiative.enemy }"
-              >
-                <span>Vous</span>
-                <strong>{{ s.initiative.hero }}</strong>
-              </div>
-              <div
-                class="combat-initiative__score"
-                :class="{ 'combat-initiative__score--lead': s.initiative.enemy > s.initiative.hero }"
-              >
-                <span>{{ enemyDef.name }}</span>
-                <strong>{{ s.initiative.enemy }}</strong>
-              </div>
-            </div>
-          </div>
+            :hero-roll="s.initiative.hero"
+            :enemy-roll="s.initiative.enemy"
+            :hero-name="s.hero.name"
+            :enemy-name="enemyDef.name"
+            @complete="showInitiative = false"
+          />
 
           <div v-else-if="phase === 'player_roll'" class="combat-phase">
             <p class="combat-phase__hint">

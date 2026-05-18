@@ -1,6 +1,14 @@
+import { ref } from 'vue'
 import defaultSave from '../data/player-default.json'
 import type { LocationKey, PlayerSave } from '../types/game'
 import { locationKey } from '../types/game'
+
+/** Incrémenté à chaque changement de PV / reset — réactivité UI. */
+export const playerRevision = ref(0)
+
+function bumpPlayer(): void {
+  playerRevision.value += 1
+}
 
 function ensureDialoguePicks(): Record<string, string[]> {
   if (!player.dialoguePicks) {
@@ -46,6 +54,7 @@ export function savePlayer(): void {
 export function resetPlayer(): void {
   player = structuredClone(defaultSave) as PlayerSave
   savePlayer()
+  bumpPlayer()
 }
 
 export function hasFlag(flag: string): boolean {
@@ -87,11 +96,17 @@ export function setLocation(zoneId: string, subZoneId: string): void {
 export function applyDamage(amount: number): void {
   player.hp = Math.max(0, player.hp - amount)
   savePlayer()
+  bumpPlayer()
 }
 
 export function setHp(hp: number): void {
   player.hp = Math.min(player.maxHp, Math.max(0, hp))
   savePlayer()
+  bumpPlayer()
+}
+
+export function isPlayerDead(): boolean {
+  return player.hp <= 0
 }
 
 export function getExploredInZone(zoneId: string): LocationKey[] {

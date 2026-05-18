@@ -121,6 +121,7 @@
 
 /* Cartes lieu */
 .subzone-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -133,6 +134,30 @@
   color: var(--card-text);
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
   min-height: 120px;
+}
+
+.subzone-card__travel-indicator {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--game-accent, #2a6a4f);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+  animation: travel-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes travel-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.75;
+  }
 }
 
 .subzone-card:hover {
@@ -785,4 +810,75 @@
     --card-border: #e0a050;
     --card-text: #f5e8d6;
   }
+}
+
+/* Modal de mort — bloquante */
+.death-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(12, 10, 8, 0.92);
+  backdrop-filter: blur(6px);
+}
+
+.death-modal__panel {
+  max-width: 28rem;
+  width: 100%;
+  padding: 2rem 1.75rem;
+  border-radius: 14px;
+  border: 1px solid rgba(179, 58, 58, 0.45);
+  background: linear-gradient(165deg, #1e1814 0%, #2a1e1e 100%);
+  color: #ece8e1;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+.death-modal__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #9a948c;
+}
+
+.death-modal__title {
+  margin: 0 0 1.25rem;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #ff9a9a;
+}
+
+.death-modal__text {
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #c9c4bc;
+}
+
+.death-modal__text--muted {
+  font-size: 0.85rem;
+  color: #8a847c;
+  font-style: italic;
+}
+
+.death-modal__btn {
+  margin-top: 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: #52b788;
+  color: #0d1f14;
+  cursor: pointer;
+  width: 100%;
+  max-width: 16rem;
+}
+
+.death-modal__btn:hover {
+  filter: brightness(1.08);
 }

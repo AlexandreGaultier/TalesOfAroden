@@ -6,6 +6,8 @@ import { ZONE_TYPE_LABELS } from '../../game/zoneTypes'
 const props = defineProps<{
   subZone: SubZone
   active?: boolean
+  /** Destination accessible depuis le lieu actuel. */
+  reachable?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -29,6 +31,12 @@ const gridStyle = computed(() => ({
     :style="gridStyle"
     @click="emit('open', subZone.id)"
   >
+    <span
+      v-if="reachable && !active"
+      class="subzone-card__travel-indicator"
+      title="Chemin accessible"
+      aria-hidden="true"
+    />
     <span class="subzone-card__type">{{ typeLabel }}</span>
     <h3 class="subzone-card__title">{{ subZone.name }}</h3>
     <p class="subzone-card__narrative">{{ subZone.narrative }}</p>

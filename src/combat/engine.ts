@@ -9,7 +9,7 @@ import { DICE_COUNT, MAX_REROLLS, rollDie, rollDice } from './dice'
 import { findMatchingAbilities, pickBestAbility } from './patterns'
 import { faceToSymbol } from './symbols'
 
-export const INITIATIVE_DURATION_MS = 3000
+export const INITIATIVE_DURATION_MS = 5000
 
 export function createFighter(def: CombatantDef, hp?: number): FighterState {
   return {

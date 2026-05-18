@@ -21,14 +21,14 @@ import {
   setCombatVisitSafe,
 } from './combatState'
 import { isDialogueComplete } from './dialogueState'
-import { startCombatFromZone } from '../combat/combatStore'
-import { isCombatOpen } from '../combat/combatStore'
+import { closeCombat, isCombatOpen, startCombatFromZone } from '../combat/combatStore'
 import { checkCombatRematch } from './encounters'
 import {
   getPlayer,
   hasFlag,
   isExplored,
   loadPlayer,
+  playerRevision,
   resetPlayer,
   setLocation,
 } from './playerStore'
@@ -130,6 +130,24 @@ export function needsRematchCheck(subZoneId: string): boolean {
   if (hasVigilanceRoll(subZoneId)) return false
   return !isCombatVisitSafe(subZoneId)
 }
+
+/** Lieux voisins accessibles depuis la position actuelle (chemins débloqués). */
+export function getReachableDestinationIds(): string[] {
+  const currentId = getPlayer().currentSubZoneId
+  if (!canShowPathsInModal(currentId)) return []
+  return getTravelOptions(currentId).map((opt) => opt.target.id)
+}
+
+export const reachableSubZoneIds = computed((): Set<string> => {
+  playerVersion.value
+  return new Set(getReachableDestinationIds())
+})
+
+export const isPlayerDead = computed((): boolean => {
+  playerVersion.value
+  playerRevision.value
+  return getPlayer().hp <= 0
+})
 
 export function getTravelOptions(fromSubZoneId: string) {
   const p = getPlayer()
@@ -236,6 +254,7 @@ export function clearJournal(): void {
 }
 
 export function restartGame(): void {
+  closeCombat()
   resetPlayer()
   resetAllCombatVisits()
   resetAllRollStates()

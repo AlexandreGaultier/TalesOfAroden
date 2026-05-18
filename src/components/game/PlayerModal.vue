@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { closeModal, playerVersion } from '../../game/gameSession'
-import { getPlayer } from '../../game/playerStore'
+import { getPlayer, playerRevision } from '../../game/playerStore'
 import AppModal from './AppModal.vue'
 
 const player = computed(() => {
   playerVersion.value
+  playerRevision.value
   return getPlayer()
 })
 </script>
