@@ -1,0 +1,352 @@
+{
+  "id": "foret-sylvestre",
+  "name": "Forêt Sylvestre",
+  "description": "Frênes moussus, brume basse et sentiers oubliés.",
+  "startingSubZoneId": "sanctuaire-eveil",
+  "subZones": [
+    {
+      "id": "sanctuaire-eveil",
+      "type": "narrative",
+      "name": "Sanctuaire de l'Éveil",
+      "narrative": "Vous vous réveillez d'une longue sieste entre des pierres blanches encore tièdes. Le voyage fut long ; la forêt murmure autour de vous.",
+      "mapPosition": { "col": 1, "row": 2 },
+      "connections": [
+        { "targetId": "combat-1", "travelLabel": "Un sentier battu vers une clairière" }
+      ],
+      "content": {
+        "speaker": "Narrateur",
+        "lines": [
+          "Le sanctuaire porte encore la chaleur du soleil d'hier.",
+          "Il est temps de reprendre la route — la Forêt Sylvestre n'attend pas."
+        ]
+      }
+    },
+    {
+      "id": "combat-1",
+      "type": "combat",
+      "name": "Clairière des Ombres",
+      "narrative": "La lumière faiblit. Des formes rapides fendent la mousse entre les troncs.",
+      "mapPosition": { "col": 2, "row": 2 },
+      "connections": [
+        { "targetId": "sanctuaire-eveil", "travelLabel": "Retour au sanctuaire" },
+        { "targetId": "dialogue-1", "travelLabel": "Une hutte enfumée" },
+        { "targetId": "dialogue-2", "travelLabel": "Un feu de camp au loin" }
+      ],
+      "content": {
+        "encounterId": "ombres-clairiere",
+        "title": "Des silhouettes bondissent entre les troncs !",
+        "rematchTitle": "Les ombres se reformen — elles n'avaient pas tout à fait disparu !",
+        "victoryFlag": "ombres_clairiere_defeated",
+        "rematchThreshold": 4,
+        "vigilanceSafeText": "Vous longez un amas d'ossements noircis — le souvenir de votre victoire. Rien ne bouge.",
+        "vigilanceDangerText": "Un frisson vous traverse : les ombres s'étirent de nouveau entre les troncs…",
+        "combatWinText": "Les silhouettes se dissipent dans la mousse.",
+        "combatLoseText": "Une griffe vous entaille le flanc (−3 PV)."
+      }
+    },
+    {
+      "id": "dialogue-1",
+      "type": "dialogue",
+      "name": "Ermitage d'Aldric",
+      "narrative": "Une hutte de branchages, une fumée d'herbes séchées. Un vieil homme vous observe sans surprise.",
+      "mapPosition": { "col": 2, "row": 1 },
+      "connections": [
+        { "targetId": "combat-1", "travelLabel": "Revenir à la clairière" },
+        { "targetId": "marchand-itinerant", "travelLabel": "Le tintement de pièces au nord" }
+      ],
+      "content": {
+        "npcId": "aldric",
+        "npcName": "Aldric l'Ermite",
+        "intro": [
+          "« Ah, un voyageur. La forêt t'a conduit ici pour une raison. »"
+        ],
+        "initialChoiceIds": ["ask-forest", "ask-path"],
+        "choices": [
+          {
+            "id": "ask-forest",
+            "label": "Que sais-tu de cette forêt ?",
+            "npcReply": [
+              "« Elle dort, mais Roncecœur rêve encore sous nos pieds. »"
+            ],
+            "reveals": ["ask-roncecoeur"]
+          },
+          {
+            "id": "ask-path",
+            "label": "Je cherche mon chemin.",
+            "npcReply": [
+              "« Korin le marchand campe vers les montagnes. »"
+            ],
+            "reveals": ["ask-korin"]
+          },
+          {
+            "id": "ask-roncecoeur",
+            "label": "Parlez-moi de Roncecœur.",
+            "npcReply": [
+              "« N'y descends pas sans lame affûtée, jeune fou. »"
+            ]
+          },
+          {
+            "id": "ask-korin",
+            "label": "Où trouver Korin ?",
+            "npcReply": [
+              "« Suis le tintement des pièces au nord de la clairière. »"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialogue-2",
+      "type": "dialogue",
+      "name": "Campement de Mira",
+      "narrative": "Une chasseuse politique sa lame près d'un feu presque éteint. Elle vous fait signe de vous approcher.",
+      "mapPosition": { "col": 3, "row": 2 },
+      "connections": [
+        { "targetId": "combat-1", "travelLabel": "Retour à la clairière" },
+        { "targetId": "combat-3", "travelLabel": "Des hurlements vers l'est" },
+        { "targetId": "dialogue-3", "travelLabel": "Une lueur bleutée dans la brume" }
+      ],
+      "content": {
+        "npcId": "mira",
+        "npcName": "Mira la Chasseuse",
+        "intro": [
+          "« Tu as l'air épuisé. Le feu est presque mort, mais je peux parler. »"
+        ],
+        "initialChoiceIds": ["ask-meute", "ask-esprit"],
+        "choices": [
+          {
+            "id": "ask-meute",
+            "label": "Des dangers dans le coin ?",
+            "npcReply": [
+              "« Une meute rôde vers le vallon. Si tu y vas, reste sur tes gardes. »"
+            ],
+            "reveals": ["ask-vallon"]
+          },
+          {
+            "id": "ask-esprit",
+            "label": "J'ai vu une lueur au sud.",
+            "npcReply": [
+              "« C'est l'esprit de brume. Il connaît les sorties de la forêt. »"
+            ],
+            "reveals": ["ask-sorties"]
+          },
+          {
+            "id": "ask-vallon",
+            "label": "Comment atteindre le vallon ?",
+            "npcReply": [
+              "« Passe par l'antre des loups à l'est, puis suis la piste. »"
+            ]
+          },
+          {
+            "id": "ask-sorties",
+            "label": "Quelles sorties connaît-il ?",
+            "npcReply": [
+              "« Le vallon glorieux à l'est, et les montagnes via Korin au nord. »"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "combat-3",
+      "type": "combat",
+      "name": "Antre des Loups",
+      "narrative": "L'odeur de bête et de terre humide. Des yeux jaunes brillent dans l'obscurité du sous-bois.",
+      "mapPosition": { "col": 4, "row": 2 },
+      "connections": [
+        { "targetId": "dialogue-2", "travelLabel": "Revenir au campement" },
+        { "targetId": "sortie-vallon", "travelLabel": "La route du vallon glorieux" }
+      ],
+      "content": {
+        "encounterId": "meute-alpha",
+        "title": "Un loup alpha vous fixe, crocs découvertes.",
+        "rematchTitle": "Des hurlements résonnent — la meute est de retour !",
+        "victoryFlag": "alpha_loup_defeated",
+        "rematchThreshold": 4,
+        "vigilanceSafeText": "Vous contournez le cadavre du loup alpha, encore chaud. La meute a déserté les lieux.",
+        "vigilanceDangerText": "Un grondement répond à votre pas : la meute n'a pas quitté l'antre !",
+        "combatWinText": "La meute fuit en hurlant dans la brume.",
+        "combatLoseText": "Les crocs trouvent votre chair (−3 PV)."
+      }
+    },
+    {
+      "id": "sortie-vallon",
+      "type": "exit",
+      "name": "Sortie — Vallon glorieux",
+      "narrative": "Le sentier s'élargit. Au loin, une vallée ensoleillée attend au-delà des dernières cimes boisées.",
+      "mapPosition": { "col": 5, "row": 2 },
+      "connections": [
+        { "targetId": "combat-3", "travelLabel": "Revenir vers l'antre" }
+      ],
+      "content": {
+        "targetZoneId": "vallon-glorieux",
+        "targetZoneName": "Vallon glorieux"
+      }
+    },
+    {
+      "id": "dialogue-3",
+      "type": "dialogue",
+      "name": "Clairière de l'Esprit",
+      "narrative": "La brume forme des visages pâles. Une voix ancienne résonne sans bouger les feuilles.",
+      "mapPosition": { "col": 3, "row": 3 },
+      "connections": [
+        { "targetId": "dialogue-2", "travelLabel": "Retour au campement" },
+        { "targetId": "marchand-itinerant", "travelLabel": "Des voix et des rires" },
+        { "targetId": "combat-2", "travelLabel": "Un grouillement vers le sud" }
+      ],
+      "content": {
+        "npcId": "esprit-brume",
+        "npcName": "Esprit de Brume",
+        "intro": [
+          "« Nous étions les gardiens du sanctuaire, avant le long sommeil de la forêt. »"
+        ],
+        "initialChoiceIds": ["ask-sanctuaire", "ask-sud"],
+        "choices": [
+          {
+            "id": "ask-sanctuaire",
+            "label": "Que s'est-il passé au sanctuaire ?",
+            "npcReply": [
+              "« Il s'est endormi avec la forêt. Seuls les voyageurs le réveillent. »"
+            ],
+            "reveals": ["ask-roncecoeur-esprit"]
+          },
+          {
+            "id": "ask-sud",
+            "label": "Que cache le sud ?",
+            "npcReply": [
+              "« Roncecœur et son sanglier de pierre. Le fourré grouille encore. »"
+            ],
+            "reveals": ["ask-korin-esprit"]
+          },
+          {
+            "id": "ask-roncecoeur-esprit",
+            "label": "Parlez-moi de Roncecœur.",
+            "npcReply": [
+              "« Les ruines boivent la mémoire des rois. N'y entre pas sans respect. »"
+            ]
+          },
+          {
+            "id": "ask-korin-esprit",
+            "label": "Comment quitter ces bois ?",
+            "npcReply": [
+              "« Korin tient l'étal vers les montagnes. La meute garde le vallon à l'est. »"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "marchand-itinerant",
+      "type": "merchant",
+      "name": "Étal de Korin",
+      "narrative": "Babioles, baumes et lames d'appoint étalés sur des peaux de bête. Korin vous salue d'un hochement de tête.",
+      "mapPosition": { "col": 3, "row": 1 },
+      "connections": [
+        { "targetId": "dialogue-1", "travelLabel": "Revenir vers l'ermite" },
+        { "targetId": "dialogue-3", "travelLabel": "La clairière brumeuse" },
+        { "targetId": "sortie-montagnes", "travelLabel": "La route des montagnes" }
+      ],
+      "content": {
+        "merchantId": "korin",
+        "shopName": "Babioles & Baumes de Korin",
+        "greeting": "« Achète, voyageur — demain la forêt te prendra peut-être tout. »"
+      }
+    },
+    {
+      "id": "sortie-montagnes",
+      "type": "exit",
+      "name": "Sortie — Montagnes",
+      "narrative": "Le sentier grimpe. L'air devient vif ; des pics enneigés percent la ligne des arbres.",
+      "mapPosition": { "col": 4, "row": 1 },
+      "connections": [
+        { "targetId": "marchand-itinerant", "travelLabel": "Revenir vers l'étal" }
+      ],
+      "content": {
+        "targetZoneId": "montagnes-aroden",
+        "targetZoneName": "Les Montagnes"
+      }
+    },
+    {
+      "id": "combat-2",
+      "type": "combat",
+      "name": "Fourré du Sanglier",
+      "narrative": "Des racines noueuses, des traces profondes dans la boue. Quelque chose de lourd respire dans le taillis.",
+      "mapPosition": { "col": 4, "row": 3 },
+      "connections": [
+        { "targetId": "dialogue-3", "travelLabel": "Revenir à la clairière" },
+        { "targetId": "dialogue-4", "travelLabel": "Un chêne immense plus loin" },
+        { "targetId": "donjon-roncecoeur", "travelLabel": "Des marches de pierre qui descendent" }
+      ],
+      "content": {
+        "encounterId": "sanglier-roncecoeur",
+        "title": "Un sanglier charge à travers le fourré !",
+        "rematchTitle": "Le sanglier surgit de nouveau des broussailles !",
+        "victoryFlag": "sanglier_roncecoeur_defeated",
+        "rematchThreshold": 4,
+        "vigilanceSafeText": "Vous contournez le cadavre du sanglier, engoncé dans les racines. Le fourré est silencieux.",
+        "vigilanceDangerText": "La boue crève — le sanglier, ou ce qu'il en reste, charge une nouvelle fois !",
+        "combatWinText": "La bête s'effondre, lourde et définitive.",
+        "combatLoseText": "Les défenses vous bousculent (−3 PV)."
+      }
+    },
+    {
+      "id": "dialogue-4",
+      "type": "dialogue",
+      "name": "Chêne de la Dryade",
+      "narrative": "L'écorce pulse comme un cœur lent. Lyra émerge du bois vivant, ses yeux couleur de mousse.",
+      "mapPosition": { "col": 5, "row": 3 },
+      "connections": [
+        { "targetId": "combat-2", "travelLabel": "Revenir au fourré" }
+      ],
+      "content": {
+        "npcId": "lyra",
+        "npcName": "Lyra la Dryade",
+        "intro": [
+          "« La sève coule encore dans ce chêne. Que veux-tu, mortel ? »"
+        ],
+        "initialChoiceIds": ["ask-arbre", "ask-donjon"],
+        "choices": [
+          {
+            "id": "ask-arbre",
+            "label": "Ce chêne est-il vivant ?",
+            "npcReply": [
+              "« Il rêve avec la forêt. Je suis sa voix, et sa gardienne. »"
+            ],
+            "reveals": ["ask-interdit"]
+          },
+          {
+            "id": "ask-donjon",
+            "label": "Les Ruines de Roncecœur ?",
+            "npcReply": [
+              "« Sous tes pieds. Les rois y dormaient avant que la pierre ne se referme. »"
+            ],
+            "reveals": ["ask-interdit"]
+          },
+          {
+            "id": "ask-interdit",
+            "label": "Y a-t-il un avertissement à connaître ?",
+            "npcReply": [
+              "« Ne coupe pas de branche ici — la forêt te reconnaîtrait comme un ennemi. »"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "donjon-roncecoeur",
+      "type": "dungeon",
+      "name": "Ruines de Roncecœur",
+      "narrative": "Une porte de granit halfée par le temps. Sous vos pieds, l'escalier plonge vers l'obscurité et l'odeur de cendre.",
+      "mapPosition": { "col": 4, "row": 4 },
+      "connections": [
+        { "targetId": "combat-2", "travelLabel": "Remonter vers le fourré" }
+      ],
+      "content": {
+        "dungeonId": "ruines-roncecoeur",
+        "name": "Ruines de Roncecœur",
+        "dataFile": "zones/ruines-roncecoeur.json",
+        "teaser": "Le donjon complet sera chargé depuis un fichier JSON dédié. Pour l'instant, l'entrée est scellée par l'histoire."
+      }
+    }
+  ]
+}

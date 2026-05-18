@@ -1,0 +1,788 @@
+/* Layout desktop */
+.game-layout {
+  display: flex;
+  min-height: 100svh;
+}
+
+.game-main {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 1.5rem 2rem 2rem;
+}
+
+/* Menu latéral */
+.side-menu {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1rem;
+  background: var(--game-surface);
+  border-right: 1px solid var(--game-border);
+}
+
+.side-menu__brand {
+  margin-bottom: 2rem;
+}
+
+.side-menu__title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--game-text);
+}
+
+.side-menu__zone {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--game-muted);
+  margin-top: 0.25rem;
+}
+
+.side-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.side-menu__footer {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.side-menu__btn {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--game-border);
+  border-radius: 8px;
+  background: var(--game-bg);
+  color: var(--game-text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.side-menu__btn:hover {
+  border-color: var(--game-accent);
+  background: var(--game-surface);
+}
+
+.side-menu__btn--ghost {
+  font-size: 0.85rem;
+  color: var(--game-muted);
+}
+
+.side-menu__btn-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.side-menu__btn-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--game-muted);
+  margin-top: 0.15rem;
+}
+
+/* Carte */
+.zone-map__header {
+  margin-bottom: 1.5rem;
+}
+
+.zone-map__header h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.35rem;
+  color: var(--game-text);
+}
+
+.zone-map__header p {
+  margin: 0;
+  color: var(--game-muted);
+  font-size: 0.95rem;
+}
+
+.zone-map__grid {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  min-height: 480px;
+}
+
+.zone-map__hint {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--game-muted);
+  font-style: italic;
+}
+
+/* Cartes lieu */
+.subzone-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background: var(--card-bg);
+  color: var(--card-text);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  min-height: 120px;
+}
+
+.subzone-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.subzone-card--active {
+  border-color: var(--card-border);
+  box-shadow: 0 0 0 2px var(--card-border);
+}
+
+.subzone-card__type {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+  margin-bottom: 0.35rem;
+}
+
+.subzone-card__title {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.subzone-card__narrative {
+  font-size: 0.78rem;
+  margin: 0;
+  line-height: 1.4;
+  opacity: 0.92;
+  flex: 1;
+}
+
+/* Couleurs par type */
+.subzone-card[data-zone-type='narrative'],
+.subzone-modal[data-zone-type='narrative'],
+.travel-option[data-zone-type='narrative'] {
+  --card-bg: #f5edd6;
+  --card-border: #c9a227;
+  --card-text: #5c4a12;
+}
+
+.subzone-card[data-zone-type='combat'],
+.subzone-modal[data-zone-type='combat'],
+.travel-option[data-zone-type='combat'] {
+  --card-bg: #f5d6d6;
+  --card-border: #b33a3a;
+  --card-text: #5c1212;
+}
+
+.subzone-card[data-zone-type='dialogue'],
+.subzone-modal[data-zone-type='dialogue'],
+.travel-option[data-zone-type='dialogue'] {
+  --card-bg: #d6e8f5;
+  --card-border: #2a6a9e;
+  --card-text: #123a5c;
+}
+
+.subzone-card[data-zone-type='dungeon'],
+.subzone-modal[data-zone-type='dungeon'],
+.travel-option[data-zone-type='dungeon'] {
+  --card-bg: #e5d6f5;
+  --card-border: #6a3a9e;
+  --card-text: #3a125c;
+}
+
+.subzone-card[data-zone-type='exit'],
+.subzone-modal[data-zone-type='exit'],
+.travel-option[data-zone-type='exit'] {
+  --card-bg: #d6f5e0;
+  --card-border: #2a9e4a;
+  --card-text: #125c2a;
+}
+
+.subzone-card[data-zone-type='merchant'],
+.subzone-modal[data-zone-type='merchant'],
+.travel-option[data-zone-type='merchant'] {
+  --card-bg: #f5e8d6;
+  --card-border: #c97a27;
+  --card-text: #5c3a12;
+}
+
+/* Modales */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 440px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--game-surface);
+  border-radius: 12px;
+  border: 1px solid var(--game-border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-panel--wide {
+  max-width: 560px;
+}
+
+.modal-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--game-border);
+}
+
+.modal-panel__header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--game-text);
+}
+
+.modal-panel__close {
+  font-size: 1.5rem;
+  line-height: 1;
+  border: none;
+  background: none;
+  color: var(--game-muted);
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.modal-panel__close:hover {
+  color: var(--game-text);
+}
+
+.modal-panel__body {
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+/* Fiche joueur */
+.player-sheet {
+  margin: 0;
+}
+
+.player-sheet__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--game-border);
+}
+
+.player-sheet__row dt {
+  color: var(--game-muted);
+  font-size: 0.85rem;
+}
+
+.player-sheet__row dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.player-sheet__mono {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+
+.player-sheet__flags h3 {
+  font-size: 0.85rem;
+  margin: 1rem 0 0.5rem;
+  color: var(--game-muted);
+}
+
+.player-sheet__flags ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.player-sheet__flags li {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 0.25rem 0;
+}
+
+.player-sheet__empty {
+  color: var(--game-muted);
+  font-size: 0.9rem;
+}
+
+/* Journal modal */
+.journal-modal__actions {
+  margin-bottom: 1rem;
+}
+
+.journal-modal__entries {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.journal-modal__line {
+  margin: 0 0 0.45rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.journal-modal__empty {
+  color: var(--game-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Modale sous-zone — récit / action / chemins */
+.subzone-modal__story,
+.subzone-modal__action,
+.subzone-modal__travel {
+  margin-bottom: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--game-border);
+}
+
+.subzone-modal__story {
+  background: var(--game-bg);
+}
+
+.subzone-modal__action {
+  background: var(--game-surface);
+  border-color: var(--game-accent);
+  border-width: 1px;
+  box-shadow: inset 0 0 0 1px rgba(45, 106, 79, 0.12);
+}
+
+.subzone-modal__travel {
+  background: var(--game-bg);
+}
+
+.subzone-modal__story-label,
+.subzone-modal__action-label,
+.subzone-modal__travel-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--game-muted);
+  margin-bottom: 0.65rem;
+}
+
+.subzone-modal__action-label {
+  color: var(--game-accent);
+}
+
+.subzone-modal__type {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--game-muted);
+  margin: 0 0 0.35rem;
+}
+
+.subzone-modal__narrative {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 0.85rem;
+}
+
+.subzone-modal__speaker {
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--game-text);
+}
+
+.subzone-modal__line {
+  margin: 0 0 0.5rem;
+  line-height: 1.45;
+}
+
+.subzone-modal__line--emphasis {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.subzone-modal__quote {
+  margin: 0 0 0.65rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--game-border);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.subzone-modal__muted {
+  font-size: 0.85rem;
+  color: var(--game-muted);
+  margin: 0;
+}
+
+.subzone-modal__result {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--game-bg);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.subzone-modal__result p {
+  margin: 0 0 0.35rem;
+}
+
+.subzone-modal__hint {
+  font-size: 0.88rem;
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+  color: var(--game-text);
+}
+
+.subzone-modal__hint--danger {
+  color: #b33a3a;
+  font-weight: 500;
+}
+
+.subzone-modal__blocked {
+  font-size: 0.85rem;
+  color: var(--game-muted);
+  font-style: italic;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--game-bg);
+  border-radius: 8px;
+  border: 1px dashed var(--game-border);
+}
+
+.travel-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.travel-option {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--card-border, var(--game-border));
+  background: var(--card-bg, var(--game-bg));
+  color: var(--card-text, var(--game-text));
+  cursor: pointer;
+}
+
+.travel-option:hover {
+  filter: brightness(0.97);
+}
+
+/* Bouton dé animé */
+.dice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.65rem 1rem 0.65rem 0.75rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.dice-btn--combat {
+  background: linear-gradient(145deg, #8b2e2e, #5c1212);
+}
+
+.dice-btn--check {
+  background: linear-gradient(145deg, #2a5a8a, #123a5c);
+}
+
+.dice-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dice-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.dice-btn__cube {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  perspective: 120px;
+}
+
+.dice-btn__face {
+  font-family: var(--mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dice-btn--rolling .dice-btn__cube {
+  animation: dice-shake 0.12s ease-in-out infinite;
+}
+
+.dice-btn--rolling .dice-btn__face {
+  animation: dice-flash 0.12s ease-in-out infinite;
+}
+
+@keyframes dice-shake {
+  0%,
+  100% {
+    transform: rotate(-8deg) scale(1);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+@keyframes dice-flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Boutons */
+.btn-primary,
+.btn-secondary {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+}
+
+.btn-primary {
+  padding: 0.6rem 1.1rem;
+  background: var(--game-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-secondary {
+  padding: 0.45rem 0.85rem;
+  background: transparent;
+  border: 1px solid var(--game-border);
+  color: var(--game-muted);
+  font-size: 0.85rem;
+}
+
+.btn-secondary:hover {
+  color: var(--game-text);
+}
+
+/* Résultat de dé persistant */
+.roll-result {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  background: var(--game-bg);
+  border: 1px solid var(--game-border);
+}
+
+.roll-result--success {
+  border-color: #2a9e4a;
+  background: rgba(42, 158, 74, 0.08);
+}
+
+.roll-result--danger {
+  border-color: #b33a3a;
+  background: rgba(179, 58, 58, 0.08);
+}
+
+.roll-result__die {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 3rem;
+}
+
+.roll-result__value {
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.roll-result__kind {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--game-muted);
+  margin-top: 0.2rem;
+}
+
+.roll-result__text {
+  flex: 1;
+}
+
+.roll-result__text p {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.roll-result__text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Dialogues à choix */
+.dialogue-panel__speaker {
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.dialogue-panel__intro {
+  margin-bottom: 0.75rem;
+}
+
+.dialogue-panel__npc {
+  margin: 0 0 0.45rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.dialogue-panel__exchange {
+  margin: 0.75rem 0;
+  padding: 0.65rem 0 0.65rem 0.75rem;
+  border-left: 3px solid var(--game-border);
+}
+
+.dialogue-panel__player {
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--game-accent);
+}
+
+.dialogue-panel__choices {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.dialogue-panel__choices-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--game-muted);
+  font-weight: 600;
+}
+
+.dialogue-choice {
+  text-align: left;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--game-border);
+  background: var(--game-surface);
+  color: var(--game-text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.dialogue-choice:hover {
+  border-color: var(--game-accent);
+  background: var(--game-bg);
+}
+
+.dialogue-panel__hint,
+.dialogue-panel__done,
+.dialogue-panel__muted {
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0;
+}
+
+.dialogue-panel__done {
+  color: var(--game-accent);
+  font-weight: 500;
+}
+
+.dialogue-panel__muted {
+  color: var(--game-muted);
+  font-style: italic;
+}
+
+@media (prefers-color-scheme: dark) {
+  .subzone-card[data-zone-type='narrative'],
+  .travel-option[data-zone-type='narrative'] {
+    --card-bg: #3d3520;
+    --card-border: #c9a227;
+    --card-text: #f5edd6;
+  }
+
+  .subzone-card[data-zone-type='combat'],
+  .travel-option[data-zone-type='combat'] {
+    --card-bg: #3d2020;
+    --card-border: #e06060;
+    --card-text: #f5d6d6;
+  }
+
+  .subzone-card[data-zone-type='dialogue'],
+  .travel-option[data-zone-type='dialogue'] {
+    --card-bg: #1e2e3d;
+    --card-border: #5a9ec9;
+    --card-text: #d6e8f5;
+  }
+
+  .subzone-card[data-zone-type='dungeon'],
+  .travel-option[data-zone-type='dungeon'] {
+    --card-bg: #2a1e3d;
+    --card-border: #9e6ac9;
+    --card-text: #e5d6f5;
+  }
+
+  .subzone-card[data-zone-type='exit'],
+  .travel-option[data-zone-type='exit'] {
+    --card-bg: #1e3d28;
+    --card-border: #4ac97a;
+    --card-text: #d6f5e0;
+  }
+
+  .subzone-card[data-zone-type='merchant'],
+  .travel-option[data-zone-type='merchant'] {
+    --card-bg: #3d2e1e;
+    --card-border: #e0a050;
+    --card-text: #f5e8d6;
+  }
+}

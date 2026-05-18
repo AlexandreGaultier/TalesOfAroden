@@ -1,0 +1,10 @@
+{
+  "name": "Voyageur",
+  "hp": 20,
+  "maxHp": 20,
+  "flags": [],
+  "currentZoneId": "foret-sylvestre",
+  "currentSubZoneId": "sanctuaire-eveil",
+  "exploredSubZones": ["foret-sylvestre/sanctuaire-eveil"],
+  "dialoguePicks": {}
+}
