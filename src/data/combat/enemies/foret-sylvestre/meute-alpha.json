@@ -1,0 +1,31 @@
+{
+  "id": "meute-alpha",
+  "name": "Loup alpha et sa meute",
+  "maxHp": 18,
+  "abilities": [
+    {
+      "id": "hurlement",
+      "name": "Hurlement de meute",
+      "description": "Trois auras et deux boucliers — la meute fond sur vous.",
+      "pattern": { "aura": 3, "shield": 2 },
+      "damage": 7,
+      "priority": 100
+    },
+    {
+      "id": "assaut",
+      "name": "Assaut coordonné",
+      "description": "Trois boucliers.",
+      "pattern": { "shield": 3 },
+      "damage": 5,
+      "priority": 70
+    },
+    {
+      "id": "morsure",
+      "name": "Morsure",
+      "description": "Deux épées.",
+      "pattern": { "sword": 2 },
+      "damage": 2,
+      "priority": 20
+    }
+  ]
+}

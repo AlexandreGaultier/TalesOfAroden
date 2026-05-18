@@ -7,7 +7,6 @@ import {
   hasCombatRoll,
   hasVigilanceRoll,
   resetAllRollStates,
-  setCombatRoll,
   setRematchTriggered,
   setVigilanceRoll,
   type StoredRoll,
@@ -22,7 +21,9 @@ import {
   setCombatVisitSafe,
 } from './combatState'
 import { isDialogueComplete } from './dialogueState'
-import { checkCombatRematch, resolveCombat, rollDie } from './encounters'
+import { startCombatFromZone } from '../combat/combatStore'
+import { isCombatOpen } from '../combat/combatStore'
+import { checkCombatRematch } from './encounters'
 import {
   getPlayer,
   hasFlag,
@@ -33,7 +34,9 @@ import {
 } from './playerStore'
 import { areNeighbors, getNeighbors, getSubZone, getZone } from './zoneRegistry'
 
-export const journal = ref<string[]>([])
+import { addJournal, clearJournal as resetJournal, journal } from './journal'
+
+export { journal }
 export const playerVersion = ref(0)
 export const activeModal = ref<'none' | 'player' | 'journal' | 'subzone'>('none')
 export const modalSubZoneId = ref<string | null>(null)
@@ -46,9 +49,7 @@ export function notifyPlayerUpdate(): void {
   bump()
 }
 
-export function addJournal(lines: string[]): void {
-  journal.value = [...journal.value, ...lines]
-}
+export { addJournal }
 
 export function initSession(): void {
   loadPlayer()
@@ -168,46 +169,6 @@ export function goToSubZone(targetSubZoneId: string): void {
   travelTo(targetSubZoneId)
 }
 
-export function runCombat(
-  subZoneId: string,
-  isRematch: boolean,
-  d6?: number,
-): StoredRoll {
-  const p = getPlayer()
-  const empty: StoredRoll = {
-    kind: 'combat',
-    value: 0,
-    lines: ['Vous devez être sur place pour combattre.'],
-    won: false,
-  }
-
-  if (!isAtLocation(subZoneId)) return empty
-
-  const content = getCombatContent(p.currentZoneId, subZoneId)
-  if (!content) return empty
-
-  const result = resolveCombat(content, isRematch, d6)
-  addJournal(result.lines)
-
-  const stored: StoredRoll = {
-    kind: 'combat',
-    value: result.roll,
-    lines: result.lines,
-    won: result.won,
-  }
-  setCombatRoll(subZoneId, stored)
-
-  if (result.won) {
-    setCombatVisitSafe(subZoneId, true)
-    setRematchTriggered(subZoneId, false)
-  } else {
-    setCombatVisitSafe(subZoneId, false)
-  }
-
-  bump()
-  return stored
-}
-
 export function runRematchCheck(subZoneId: string, d20?: number): StoredRoll {
   const p = getPlayer()
   const empty: StoredRoll = { kind: 'vigilance', value: 0, lines: [] }
@@ -231,7 +192,7 @@ export function runRematchCheck(subZoneId: string, d20?: number): StoredRoll {
   if (result.triggered) {
     setCombatVisitSafe(subZoneId, false)
     setRematchTriggered(subZoneId, true)
-    runCombat(subZoneId, true, rollDie(6))
+    startCombatFromZone(content, p.currentZoneId, subZoneId, true)
   } else {
     setCombatVisitSafe(subZoneId, true)
     setRematchTriggered(subZoneId, false)
@@ -271,16 +232,26 @@ export function tryUseExit(subZoneId: string): string[] {
 }
 
 export function clearJournal(): void {
-  journal.value = []
+  resetJournal()
 }
 
 export function restartGame(): void {
   resetPlayer()
   resetAllCombatVisits()
   resetAllRollStates()
-  journal.value = []
+  resetJournal()
   closeModal()
   bump()
+}
+
+export function engageDiceCombat(
+  subZoneId: string,
+  isRematch: boolean,
+): boolean {
+  const p = getPlayer()
+  const content = getCombatContent(p.currentZoneId, subZoneId)
+  if (!content || !isAtLocation(subZoneId)) return false
+  return startCombatFromZone(content, p.currentZoneId, subZoneId, isRematch)
 }
 
 export {
@@ -289,4 +260,5 @@ export {
   hasVigilanceRoll,
   isCombatCleared,
   isCombatContent,
+  isCombatOpen,
 }

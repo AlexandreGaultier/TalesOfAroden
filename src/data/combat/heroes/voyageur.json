@@ -1,0 +1,39 @@
+{
+  "id": "voyageur",
+  "name": "Voyageur",
+  "maxHp": 20,
+  "abilities": [
+    {
+      "id": "sanctuaire-ultime",
+      "name": "Fureur du sanctuaire",
+      "description": "Cinq auras — l'écho du sanctuaire frappe l'adversaire.",
+      "pattern": { "aura": 5 },
+      "damage": 9,
+      "priority": 100
+    },
+    {
+      "id": "entaille-brume",
+      "name": "Entaille brumeuse",
+      "description": "Trois épées et deux boucliers — une lame de brume déchire l'air.",
+      "pattern": { "sword": 3, "shield": 2 },
+      "damage": 6,
+      "priority": 80
+    },
+    {
+      "id": "triple-coup",
+      "name": "Triple frappe",
+      "description": "Trois épées.",
+      "pattern": { "sword": 3 },
+      "damage": 4,
+      "priority": 50
+    },
+    {
+      "id": "paire-forte",
+      "name": "Coup de taille",
+      "description": "Deux boucliers (parade offensive).",
+      "pattern": { "shield": 2 },
+      "damage": 2,
+      "priority": 20
+    }
+  ]
+}

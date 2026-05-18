@@ -41,6 +41,8 @@ export interface DialogueContent {
 
 export interface CombatContent {
   encounterId: string
+  /** Référence JSON dans data/combat/enemies/ */
+  enemyId: string
   title: string
   rematchTitle: string
   victoryFlag: string

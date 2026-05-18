@@ -34,6 +34,7 @@
       ],
       "content": {
         "encounterId": "ombres-clairiere",
+        "enemyId": "ombres-clairiere",
         "title": "Des silhouettes bondissent entre les troncs !",
         "rematchTitle": "Les ombres se reformen — elles n'avaient pas tout à fait disparu !",
         "victoryFlag": "ombres_clairiere_defeated",
@@ -159,6 +160,7 @@
       ],
       "content": {
         "encounterId": "meute-alpha",
+        "enemyId": "meute-alpha",
         "title": "Un loup alpha vous fixe, crocs découvertes.",
         "rematchTitle": "Des hurlements résonnent — la meute est de retour !",
         "victoryFlag": "alpha_loup_defeated",
@@ -279,10 +281,11 @@
       ],
       "content": {
         "encounterId": "sanglier-roncecoeur",
+        "enemyId": "sanglier-roncecoeur",
         "title": "Un sanglier charge à travers le fourré !",
         "rematchTitle": "Le sanglier surgit de nouveau des broussailles !",
         "victoryFlag": "sanglier_roncecoeur_defeated",
-        "rematchThreshold": 4,
+        "rematchThreshold": 19,
         "vigilanceSafeText": "Vous contournez le cadavre du sanglier, engoncé dans les racines. Le fourré est silencieux.",
         "vigilanceDangerText": "La boue crève — le sanglier, ou ce qu'il en reste, charge une nouvelle fois !",
         "combatWinText": "La bête s'effondre, lourde et définitive.",

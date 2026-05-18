@@ -1,0 +1,805 @@
+/* —— Overlay —— */
+.combat-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: linear-gradient(160deg, #1a1814 0%, #252219 45%, #1e1c18 100%);
+  color: #ece8e1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem 1.25rem 1.25rem;
+  overflow: hidden;
+}
+
+.combat-overlay__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.combat-overlay__eyebrow {
+  margin: 0 0 0.15rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #9a948c;
+}
+
+.combat-overlay__header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f5f0e8;
+}
+
+.combat-overlay__close {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: #52b788;
+  color: #0d1f14;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.combat-overlay__close:hover {
+  filter: brightness(1.08);
+}
+
+.combat-overlay__body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 300px);
+  gap: 1rem;
+}
+
+.combat-overlay__left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-height: 0;
+}
+
+.combat-overlay__journal {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.combat-overlay__journal .combat-log-panel {
+  flex: 1;
+  max-height: none;
+  min-height: 0;
+}
+
+/* —— Tour compact + PV —— */
+.combat-status-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.combat-turn-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.combat-turn-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.combat-turn-pill--hero {
+  background: rgba(82, 183, 136, 0.22);
+  color: #7dffb8;
+  border: 1px solid rgba(82, 183, 136, 0.5);
+}
+
+.combat-turn-pill--enemy {
+  background: rgba(179, 58, 58, 0.22);
+  color: #ff9a9a;
+  border: 1px solid rgba(179, 58, 58, 0.5);
+}
+
+.combat-turn-pill--neutral {
+  background: rgba(255, 255, 255, 0.06);
+  color: #c9c4bc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.combat-turn-pill--pulse {
+  animation: turn-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes turn-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
+}
+
+.combat-hp-strip {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.combat-hp-strip__vs {
+  align-self: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: #6b6560;
+  flex-shrink: 0;
+}
+
+.combat-hp-card {
+  flex: 1;
+  min-width: 0;
+  padding: 0.2rem 0.15rem;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.combat-hp-card--active.combat-hp-card--hero {
+  border-color: rgba(82, 183, 136, 0.55);
+  box-shadow: 0 0 16px rgba(82, 183, 136, 0.12);
+}
+
+.combat-hp-card--active.combat-hp-card--enemy {
+  border-color: rgba(179, 58, 58, 0.55);
+  box-shadow: 0 0 16px rgba(179, 58, 58, 0.12);
+}
+
+.combat-hp-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.combat-hp-card__name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.combat-hp-card__values {
+  font-size: 0.8rem;
+  font-family: ui-monospace, Consolas, monospace;
+  color: #c9c4bc;
+  flex-shrink: 0;
+}
+
+.combat-hp-card__bar {
+  height: 18px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.combat-hp-card__fill {
+  display: block;
+  height: 100%;
+  transition: width 0.35s ease;
+}
+
+.combat-hp-card__fill--hero {
+  background: linear-gradient(90deg, #2d6a4f, #52b788);
+}
+
+.combat-hp-card__fill--enemy {
+  background: linear-gradient(90deg, #8b2e2e, #e06060);
+}
+
+/* —— Légende symboles —— */
+.combat-symbol-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.combat-symbol-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: #9a948c;
+}
+
+.combat-symbol-legend__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.combat-symbol-legend__chip--sword {
+  background: rgba(220, 120, 80, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(220, 120, 80, 0.6);
+}
+
+.combat-symbol-legend__chip--shield {
+  background: rgba(90, 140, 200, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(90, 140, 200, 0.6);
+}
+
+.combat-symbol-legend__chip--aura {
+  background: rgba(180, 140, 255, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(180, 140, 255, 0.6);
+  color: #e8d4ff;
+}
+
+.combat-symbol-legend__faces {
+  opacity: 0.75;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* —— Panneau actions —— */
+.combat-actions-panel {
+  flex-shrink: 0;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.combat-abilities-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+/* Initiative */
+.combat-initiative {
+  text-align: center;
+  padding: 1.25rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(82, 183, 136, 0.4);
+  border-radius: 12px;
+  animation: combat-pulse 1s ease-in-out infinite;
+}
+
+@keyframes combat-pulse {
+  50% {
+    box-shadow: 0 0 24px rgba(82, 183, 136, 0.2);
+  }
+}
+
+.combat-initiative__title {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.combat-initiative__scores {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.combat-initiative__score {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  opacity: 0.55;
+}
+
+.combat-initiative__score--lead {
+  opacity: 1;
+}
+
+.combat-initiative__score strong {
+  font-size: 2.25rem;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* Phase */
+.combat-phase {
+  padding: 0;
+}
+
+.combat-phase--enemy {
+  border: none;
+}
+
+.combat-phase__hint {
+  margin: 0 0 0.75rem;
+  line-height: 1.45;
+  color: #c9c4bc;
+  font-size: 0.88rem;
+}
+
+.combat-phase__summary {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  color: #9a948c;
+  font-weight: 600;
+}
+
+.combat-phase__enemy-action {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  color: #ff9a9a;
+}
+
+.combat-phase__warn {
+  color: #ff8a8a;
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+}
+
+.combat-phase__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+/* Dés symboles */
+.combat-dice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.combat-die-btn {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.15s;
+}
+
+.combat-die-btn:hover {
+  transform: translateY(-2px);
+}
+
+.combat-die-btn--locked .combat-die-face {
+  border-color: #52b788;
+  background: rgba(82, 183, 136, 0.18);
+  box-shadow: 0 0 14px rgba(82, 183, 136, 0.3);
+}
+
+.combat-die-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  gap: 0.1rem;
+}
+
+.combat-die-face--interactive {
+  cursor: pointer;
+}
+
+.combat-die-face__glyph {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.combat-die-face__face-num {
+  font-size: 0.6rem;
+  font-family: ui-monospace, Consolas, monospace;
+  color: #6b6560;
+}
+
+.combat-die-face--sword {
+  border-color: rgba(220, 120, 80, 0.35);
+}
+
+.combat-die-face--shield {
+  border-color: rgba(90, 140, 200, 0.35);
+}
+
+.combat-die-face--aura {
+  border-color: rgba(180, 140, 255, 0.45);
+  background: rgba(180, 140, 255, 0.08);
+}
+
+.combat-die-face--aura .combat-die-face__glyph {
+  color: #e0c8ff;
+}
+
+/* Choix capacités */
+.combat-abilities-pick__label {
+  margin: 0 0 0.45rem;
+  font-size: 0.78rem;
+  color: #9a948c;
+}
+
+.combat-abilities-pick {
+  margin-bottom: 0.75rem;
+}
+
+.combat-ability-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 0.35rem;
+  border-radius: 10px;
+  border: 1px solid rgba(82, 183, 136, 0.45);
+  background: rgba(82, 183, 136, 0.12);
+  color: #ece8e1;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.combat-ability-btn:hover {
+  background: rgba(82, 183, 136, 0.22);
+  transform: translateX(3px);
+}
+
+.combat-ability-btn__left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.combat-ability-btn__name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.combat-ability-btn__pattern {
+  font-size: 0.75rem;
+  color: #9a948c;
+}
+
+.combat-ability-btn__dmg {
+  font-size: 0.85rem;
+  color: #7dffb8;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.combat-end {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.combat-end--win {
+  color: #7dffb8;
+}
+
+.combat-end--lose {
+  color: #ff8a8a;
+}
+
+/* —— Journal (inchangé) —— */
+.combat-log-panel {
+  flex: 0 0 auto;
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.combat-log-panel__title {
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9a948c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.combat-log-panel__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0.65rem;
+}
+
+.combat-log-panel__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6b6560;
+  font-style: italic;
+}
+
+.combat-log-entry {
+  margin: 0 0 0.45rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  border-left: 3px solid transparent;
+}
+
+.combat-log-entry--system {
+  color: #9a948c;
+  border-left-color: #6b6560;
+}
+
+.combat-log-entry--turn-hero {
+  color: #7dffb8;
+  font-weight: 600;
+  background: rgba(82, 183, 136, 0.08);
+  border-left-color: #52b788;
+}
+
+.combat-log-entry--turn-enemy {
+  color: #ff9a9a;
+  font-weight: 600;
+  background: rgba(179, 58, 58, 0.08);
+  border-left-color: #b33a3a;
+}
+
+.combat-log-entry--action-hero {
+  color: #c9e4d4;
+  border-left-color: #52b788;
+}
+
+.combat-log-entry--action-enemy {
+  color: #f5c4c4;
+  border-left-color: #b33a3a;
+}
+
+.combat-log-entry--damage {
+  color: #f5d6a6;
+  border-left-color: #c97a27;
+}
+
+.combat-log-entry--dice {
+  color: #b8c9e0;
+  font-size: 0.78rem;
+  border-left-color: #5a7a9e;
+}
+
+.combat-log-entry--result {
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-left-color: #f5e8d6;
+}
+
+/* —— Référence compétences —— */
+.ability-ref {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.25);
+  transition: opacity 0.25s;
+}
+
+.ability-ref--dimmed {
+  opacity: 0.42;
+}
+
+.ability-ref--hero {
+  border-color: rgba(82, 183, 136, 0.22);
+}
+
+.ability-ref--enemy {
+  border-color: rgba(179, 58, 58, 0.22);
+}
+
+.ability-ref__title {
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a948c;
+  position: sticky;
+  top: 0;
+  background: inherit;
+  padding-bottom: 0.25rem;
+}
+
+.ability-ref--hero .ability-ref__title {
+  color: #7dffb8;
+}
+
+.ability-ref--enemy .ability-ref__title {
+  color: #ff9a9a;
+}
+
+.ability-ref__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ability-ref__item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ability-ref__item:last-child {
+  border-bottom: none;
+}
+
+.ability-ref__item--active {
+  background: rgba(255, 255, 255, 0.06);
+  margin: 0 -0.35rem;
+  padding-left: 0.35rem;
+  padding-right: 0.35rem;
+  border-radius: 8px;
+}
+
+.ability-ref--hero .ability-ref__item--active {
+  background: rgba(82, 183, 136, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(82, 183, 136, 0.35);
+}
+
+.ability-ref--enemy .ability-ref__item--active {
+  background: rgba(179, 58, 58, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(179, 58, 58, 0.35);
+}
+
+.ability-ref__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.ability-ref__name {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.ability-ref__dmg {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f5a67a;
+  flex-shrink: 0;
+}
+
+.ability-ref__pattern {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.ability-ref__symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.ability-ref__symbol--sword {
+  background: rgba(220, 120, 80, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(220, 120, 80, 0.65);
+}
+
+.ability-ref__symbol--shield {
+  background: rgba(90, 140, 200, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(90, 140, 200, 0.65);
+}
+
+.ability-ref__symbol--aura {
+  background: rgba(180, 140, 255, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(180, 140, 255, 0.65);
+  color: #e8d4ff;
+}
+
+.ability-ref__pattern-text {
+  font-size: 0.7rem;
+  color: #9a948c;
+  margin-left: 0.2rem;
+}
+
+.ability-ref__desc {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: #8a847c;
+}
+
+/* Boutons */
+.combat-overlay .btn-primary {
+  background: #52b788;
+  color: #0d1f14;
+  font-weight: 600;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.combat-overlay .btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #c9c4bc;
+  padding: 0.5rem 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.combat-overlay .btn-secondary:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.combat-overlay .btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 960px) {
+  .combat-overlay__body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .combat-overlay__journal .combat-log-panel {
+    max-height: 180px;
+  }
+
+  .combat-abilities-grid {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .ability-ref {
+    max-height: 200px;
+  }
+}

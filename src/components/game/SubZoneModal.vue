@@ -21,7 +21,8 @@ import {
   modalSubZone,
   needsRematchCheck,
   playerVersion,
-  runCombat,
+  engageDiceCombat,
+  isCombatOpen,
   runRematchCheck,
   travelTo,
   tryUseExit,
@@ -115,10 +116,12 @@ watch(
   },
 )
 
-function onCombatRolled(value: number): void {
+function engageCombat(): void {
   if (!subZone.value) return
+  const subZoneId = subZone.value.id
   const rematch = rollState.value.rematchTriggered ?? false
-  runCombat(subZone.value.id, rematch, value)
+  closeModal()
+  engageDiceCombat(subZoneId, rematch)
 }
 
 function onRematchCheckRolled(value: number): void {
@@ -220,29 +223,20 @@ function handleGoHere(): void {
             />
           </template>
 
-          <RollResult
-            v-if="rollState.combat"
-            :roll="rollState.combat"
-          />
-
-          <template v-if="showCombatButton">
+          <template v-if="showCombatButton && !isCombatOpen">
             <p
               v-if="rollState.rematchTriggered"
               class="subzone-modal__hint subzone-modal__hint--danger"
             >
-              La menace est de retour ! Résolvez le combat pour débloquer les
+              La menace est de retour ! Engagez le combat pour débloquer les
               chemins.
             </p>
             <p v-else class="subzone-modal__hint">
-              Vous devez remporter le combat pour explorer les alentours.
+              Affrontez l'adversaire au combat de dés (5d6, style Dice Throne).
             </p>
-            <DiceRollButton
-              label="Affronter (1d6)"
-              :sides="6"
-              variant="combat"
-              :settled-value="rollState.combat?.won ? rollState.combat.value : null"
-              @rolled="onCombatRolled"
-            />
+            <button type="button" class="btn-primary btn-combat-start" @click="engageCombat">
+              Engager le combat
+            </button>
           </template>
         </template>
 

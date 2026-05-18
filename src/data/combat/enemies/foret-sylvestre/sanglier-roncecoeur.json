@@ -1,0 +1,31 @@
+{
+  "id": "sanglier-roncecoeur",
+  "name": "Sanglier de Roncecœur",
+  "maxHp": 22,
+  "abilities": [
+    {
+      "id": "charge",
+      "name": "Charge brutale",
+      "description": "Cinq boucliers — le sanglier traverse le fourré.",
+      "pattern": { "shield": 5 },
+      "damage": 10,
+      "priority": 100
+    },
+    {
+      "id": "souffle",
+      "name": "Souffle de boue",
+      "description": "Cinq épées.",
+      "pattern": { "sword": 5 },
+      "damage": 6,
+      "priority": 80
+    },
+    {
+      "id": "piétinement",
+      "name": "Piétinement",
+      "description": "Trois boucliers.",
+      "pattern": { "shield": 3 },
+      "damage": 4,
+      "priority": 50
+    }
+  ]
+}

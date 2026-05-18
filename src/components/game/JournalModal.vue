@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { clearJournal, closeModal, journal } from '../../game/gameSession'
+import { clearJournal, journal } from '../../game/journal'
+import { closeModal } from '../../game/gameSession'
 import AppModal from './AppModal.vue'
 </script>
 

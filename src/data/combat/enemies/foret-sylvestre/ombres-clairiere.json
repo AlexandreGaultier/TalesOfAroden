@@ -1,0 +1,31 @@
+{
+  "id": "ombres-clairiere",
+  "name": "Ombres de la clairière",
+  "maxHp": 14,
+  "abilities": [
+    {
+      "id": "manteau-noir",
+      "name": "Manteau noir",
+      "description": "Quatre épées — les ombres vous engloutissent.",
+      "pattern": { "sword": 4 },
+      "damage": 5,
+      "priority": 90
+    },
+    {
+      "id": "griffes",
+      "name": "Griffes d'ombre",
+      "description": "Trois épées.",
+      "pattern": { "sword": 3 },
+      "damage": 3,
+      "priority": 60
+    },
+    {
+      "id": "morsure",
+      "name": "Morsure obscure",
+      "description": "Deux boucliers.",
+      "pattern": { "shield": 2 },
+      "damage": 2,
+      "priority": 30
+    }
+  ]
+}

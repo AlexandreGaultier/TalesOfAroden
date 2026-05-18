@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { isCombatOpen } from '../../combat/combatStore'
 import { activeModal, initSession } from '../../game/gameSession'
+import CombatOverlay from '../combat/CombatOverlay.vue'
 import JournalModal from './JournalModal.vue'
 import PlayerModal from './PlayerModal.vue'
 import SideMenu from './SideMenu.vue'
@@ -27,5 +29,6 @@ const showSubZone = computed(() => activeModal.value === 'subzone')
     <PlayerModal v-if="showPlayer" />
     <JournalModal v-if="showJournal" />
     <SubZoneModal v-if="showSubZone" />
+    <CombatOverlay v-if="isCombatOpen" />
   </div>
 </template>
