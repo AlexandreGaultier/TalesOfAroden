@@ -27,16 +27,25 @@ import {
   getPlayer,
   hasFlag,
   isExplored,
-  loadPlayer,
   playerRevision,
   resetPlayer,
   setLocation,
 } from './playerStore'
+import {
+  applyCharacterSlot,
+  clearActiveCharacter,
+  createCharacter,
+  deleteCharacter,
+  getCharacter,
+  listCharacters,
+  persistActiveCharacter,
+} from './saveStore'
 import { areNeighbors, getNeighbors, getSubZone, getZone } from './zoneRegistry'
 
 import { addJournal, clearJournal as resetJournal, journal } from './journal'
 
 export { journal }
+export const gamePhase = ref<'title' | 'playing'>('title')
 export const playerVersion = ref(0)
 export const activeModal = ref<'none' | 'player' | 'journal' | 'subzone'>('none')
 export const modalSubZoneId = ref<string | null>(null)
@@ -52,9 +61,42 @@ export function notifyPlayerUpdate(): void {
 export { addJournal }
 
 export function initSession(): void {
-  loadPlayer()
   bump()
 }
+
+export function saveGame(): boolean {
+  return persistActiveCharacter()
+}
+
+export function startCharacter(characterId: string): boolean {
+  const slot = getCharacter(characterId)
+  if (!slot) return false
+  closeCombat()
+  applyCharacterSlot(slot)
+  gamePhase.value = 'playing'
+  closeModal()
+  bump()
+  return true
+}
+
+export function createAndStartCharacter(name: string): boolean {
+  const slot = createCharacter(name)
+  return startCharacter(slot.id)
+}
+
+export function returnToTitleScreen(): void {
+  closeCombat()
+  persistActiveCharacter()
+  clearActiveCharacter()
+  closeModal()
+  gamePhase.value = 'title'
+}
+
+export function removeCharacter(characterId: string): void {
+  deleteCharacter(characterId)
+}
+
+export { listCharacters }
 
 export const currentZone = computed((): GameZone | undefined => {
   playerVersion.value
@@ -254,12 +296,14 @@ export function clearJournal(): void {
 }
 
 export function restartGame(): void {
+  const name = getPlayer().name
   closeCombat()
-  resetPlayer()
+  resetPlayer(name)
   resetAllCombatVisits()
   resetAllRollStates()
   resetJournal()
   closeModal()
+  persistActiveCharacter()
   bump()
 }
 

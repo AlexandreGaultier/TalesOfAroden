@@ -495,10 +495,11 @@
   transform: translateY(-2px);
 }
 
-.combat-die-btn--locked .combat-die-face {
-  border-color: #52b788;
-  background: rgba(82, 183, 136, 0.18);
-  box-shadow: 0 0 14px rgba(82, 183, 136, 0.3);
+.combat-die-btn--selected .combat-die-face,
+.combat-die-face--selected {
+  border-color: #e8b84a;
+  background: rgba(232, 184, 74, 0.2);
+  box-shadow: 0 0 14px rgba(232, 184, 74, 0.35);
 }
 
 .combat-die-face {

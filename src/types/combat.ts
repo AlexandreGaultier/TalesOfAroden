@@ -64,7 +64,8 @@ export interface CombatSession {
   hero: FighterState
   enemy: FighterState
   dice: number[]
-  locked: boolean[]
+  /** true = ce dé sera relancé au prochain « Relancer ». */
+  toReroll: boolean[]
   rerollsLeft: number
   initiative: { hero: number; enemy: number } | null
   activeSide: 'hero' | 'enemy'

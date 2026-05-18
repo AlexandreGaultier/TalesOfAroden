@@ -61,6 +61,14 @@ export function resetAllRollStates(): void {
   rollState.value = {}
 }
 
+export function getRollStateSnapshot(): Record<string, SubZoneRollState> {
+  return { ...rollState.value }
+}
+
+export function loadRollState(data: Record<string, SubZoneRollState>): void {
+  rollState.value = { ...data }
+}
+
 export function hasVigilanceRoll(subZoneId: string): boolean {
   return getRollState(subZoneId).vigilance !== undefined
 }

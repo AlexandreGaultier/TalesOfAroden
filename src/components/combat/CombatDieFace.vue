@@ -4,7 +4,8 @@ import { faceToSymbol, SYMBOL_META } from '../../combat/symbols'
 
 const props = defineProps<{
   face: number
-  locked?: boolean
+  /** Marqué pour être relancé. */
+  selected?: boolean
   interactive?: boolean
 }>()
 
@@ -17,7 +18,7 @@ const label = computed(() => SYMBOL_META[symbol.value].label)
     class="combat-die-face"
     :class="[
       `combat-die-face--${symbol}`,
-      { 'combat-die-face--locked': locked },
+      { 'combat-die-face--selected': selected },
       { 'combat-die-face--interactive': interactive },
     ]"
     :title="`${label} (face ${face})`"

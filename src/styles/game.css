@@ -882,3 +882,220 @@
 .death-modal__btn:hover {
   filter: brightness(1.08);
 }
+
+.death-modal__btn--secondary {
+  margin-top: 0.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #c9c4bc;
+}
+
+.death-modal__btn--secondary:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  filter: none;
+}
+
+/* —— Écran titre —— */
+.title-screen {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem 3rem;
+  background: linear-gradient(165deg, var(--game-bg) 0%, #e8e2d8 50%, var(--game-bg) 100%);
+}
+
+.title-screen__header {
+  text-align: center;
+  margin-bottom: 2rem;
+  max-width: 32rem;
+}
+
+.title-screen__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--game-muted);
+}
+
+.title-screen__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--game-text);
+  letter-spacing: 0.02em;
+}
+
+.title-screen__subtitle {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--game-muted);
+  line-height: 1.5;
+}
+
+.title-screen__panel {
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.35rem 1.25rem 1.5rem;
+  background: var(--game-surface);
+  border: 1px solid var(--game-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.title-screen__panel-title {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--game-muted);
+}
+
+.title-screen__empty {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--game-muted);
+  font-style: italic;
+}
+
+.title-screen__list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title-card {
+  display: flex;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.title-card__play {
+  flex: 1;
+  text-align: left;
+  font: inherit;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--game-border);
+  border-radius: 10px;
+  background: var(--game-bg);
+  color: var(--game-text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.title-card__play:hover {
+  border-color: var(--game-accent);
+  background: var(--game-surface);
+  transform: translateX(3px);
+}
+
+.title-card__name {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.title-card__meta {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--game-muted);
+}
+
+.title-card__date {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--game-muted);
+  margin-top: 0.25rem;
+  opacity: 0.85;
+}
+
+.title-card__delete {
+  flex-shrink: 0;
+  width: 2.25rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  border: 1px solid var(--game-border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--game-muted);
+  cursor: pointer;
+}
+
+.title-card__delete:hover {
+  border-color: #b33a3a;
+  color: #b33a3a;
+  background: rgba(179, 58, 58, 0.08);
+}
+
+.title-screen__error {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #b33a3a;
+}
+
+.title-screen__create {
+  margin-top: 0.5rem;
+}
+
+.title-screen__label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--game-muted);
+  margin-bottom: 0.35rem;
+}
+
+.title-screen__input {
+  width: 100%;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--game-border);
+  border-radius: 8px;
+  background: var(--game-bg);
+  color: var(--game-text);
+  margin-bottom: 0.75rem;
+}
+
+.title-screen__input:focus {
+  outline: 2px solid var(--game-accent);
+  outline-offset: 1px;
+}
+
+.title-screen__create-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.title-screen__new {
+  width: 100%;
+}
+
+.side-menu__btn--save {
+  border-color: var(--game-accent);
+  background: rgba(45, 106, 79, 0.08);
+}
+
+.side-menu__btn--save:hover {
+  background: rgba(45, 106, 79, 0.14);
+}
+
+.side-menu__btn--link {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .title-screen {
+    background: linear-gradient(165deg, var(--game-bg) 0%, #1e2420 50%, var(--game-bg) 100%);
+  }
+
+  .side-menu__btn--save {
+    background: rgba(82, 183, 136, 0.1);
+  }
+}

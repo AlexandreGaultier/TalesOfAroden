@@ -36,19 +36,20 @@ export function resolveFirstAttacker(
 
 export function startPlayerRoll(): Pick<
   CombatSession,
-  'dice' | 'locked' | 'rerollsLeft'
+  'dice' | 'toReroll' | 'rerollsLeft'
 > {
   return {
     dice: rollDice(DICE_COUNT),
-    locked: Array(DICE_COUNT).fill(false),
+    toReroll: Array(DICE_COUNT).fill(false),
     rerollsLeft: MAX_REROLLS,
   }
 }
 
-export function rerollUnlockedDice(session: CombatSession): number[] {
+/** Relance uniquement les dés marqués (toReroll). */
+export function rerollSelectedDice(session: CombatSession): number[] {
   const next = [...session.dice]
   for (let i = 0; i < DICE_COUNT; i++) {
-    if (!session.locked[i]) next[i] = rollDie()
+    if (session.toReroll[i]) next[i] = rollDie()
   }
   return next
 }

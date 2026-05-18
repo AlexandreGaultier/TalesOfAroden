@@ -11,7 +11,7 @@ import {
   applyDamage,
   createFighter,
   getMatchingForSide,
-  rerollUnlockedDice,
+  rerollSelectedDice,
   resolveFirstAttacker,
   rollInitiativeD20,
   runEnemyTurn,
@@ -77,7 +77,7 @@ export function startCombat(
     hero: createFighter(hero, player.hp),
     enemy: createFighter(enemy),
     dice: [],
-    locked: [],
+    toReroll: [],
     rerollsLeft: 0,
     initiative: init,
     activeSide: first,
@@ -132,21 +132,23 @@ function beginTurn(side: 'hero' | 'enemy'): void {
   setTimeout(() => runEnemyTurnAction(), ENEMY_TURN_DELAY_MS)
 }
 
-export function toggleDieLock(index: number): void {
+export function toggleDieToReroll(index: number): void {
   const s = session.value
   if (!s || s.phase !== 'player_roll') return
-  const locked = [...s.locked]
-  locked[index] = !locked[index]
-  session.value = { ...s, locked }
+  const toReroll = [...s.toReroll]
+  toReroll[index] = !toReroll[index]
+  session.value = { ...s, toReroll }
 }
 
 export function playerReroll(): void {
   const s = session.value
   if (!s || s.phase !== 'player_roll' || s.rerollsLeft <= 0) return
-  const dice = rerollUnlockedDice(s)
+  if (!s.toReroll.some(Boolean)) return
+  const dice = rerollSelectedDice(s)
   session.value = {
     ...s,
     dice,
+    toReroll: Array(s.toReroll.length).fill(false),
     rerollsLeft: s.rerollsLeft - 1,
     log: [
       ...s.log,

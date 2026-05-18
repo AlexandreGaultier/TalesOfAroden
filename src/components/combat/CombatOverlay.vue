@@ -11,7 +11,7 @@ import {
   playerReroll,
   playerUseAbility,
   session,
-  toggleDieLock,
+  toggleDieToReroll,
 } from '../../combat/combatStore'
 import { notifyPlayerUpdate, isPlayerDead } from '../../game/gameSession'
 import CombatInitiativeRoll from './CombatInitiativeRoll.vue'
@@ -80,6 +80,10 @@ const diceSymbolSummary = computed(() => {
   if (!s.value?.dice.length) return ''
   return formatSymbolCounts(countSymbolsFromDice(s.value.dice))
 })
+
+const hasDiceSelectedForReroll = computed(
+  () => s.value?.toReroll.some(Boolean) ?? false,
+)
 
 function handleClose(): void {
   if (s.value?.phase === 'ended') {
@@ -175,7 +179,7 @@ function handleClose(): void {
 
           <div v-else-if="phase === 'player_roll'" class="combat-phase">
             <p class="combat-phase__hint">
-              Cliquez sur un dé pour le <strong>verrouiller</strong>.
+              Cliquez sur les dés à <strong>relancer</strong> — les autres sont conservés.
               Relances : <strong>{{ s.rerollsLeft }}</strong> / 2
             </p>
             <div class="combat-dice">
@@ -184,10 +188,10 @@ function handleClose(): void {
                 :key="i"
                 type="button"
                 class="combat-die-btn"
-                :class="{ 'combat-die-btn--locked': s.locked[i] }"
-                @click="toggleDieLock(i)"
+                :class="{ 'combat-die-btn--selected': s.toReroll[i] }"
+                @click="toggleDieToReroll(i)"
               >
-                <CombatDieFace :face="die" :locked="s.locked[i]" interactive />
+                <CombatDieFace :face="die" :selected="s.toReroll[i]" interactive />
               </button>
             </div>
             <p v-if="diceSymbolSummary" class="combat-phase__summary">
@@ -197,10 +201,10 @@ function handleClose(): void {
               <button
                 type="button"
                 class="btn-secondary"
-                :disabled="s.rerollsLeft <= 0"
+                :disabled="s.rerollsLeft <= 0 || !hasDiceSelectedForReroll"
                 @click="playerReroll"
               >
-                Relancer les dés libres
+                Relancer la sélection
               </button>
               <button type="button" class="btn-primary" @click="confirmPlayerRoll">
                 Valider les dés

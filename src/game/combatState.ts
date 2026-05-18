@@ -25,6 +25,14 @@ export function resetAllCombatVisits(): void {
   visitSafe.value = {}
 }
 
+export function getCombatVisitsSnapshot(): Record<string, boolean> {
+  return { ...visitSafe.value }
+}
+
+export function loadCombatVisits(data: Record<string, boolean>): void {
+  visitSafe.value = { ...data }
+}
+
 export function getCombatContent(
   zoneId: string,
   subZoneId: string,

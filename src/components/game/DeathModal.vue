@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { restartGame } from '../../game/gameSession'
+import { restartGame, returnToTitleScreen } from '../../game/gameSession'
 
 function handleRestart(): void {
   restartGame()
+}
+
+function handleChangeHero(): void {
+  returnToTitleScreen()
 }
 </script>
 
@@ -22,7 +26,14 @@ function handleRestart(): void {
         sanctuaire, si le destin vous en accorde encore une chance.
       </p>
       <button type="button" class="death-modal__btn" @click="handleRestart">
-        Recommencer l'aventure
+        Recommencer avec ce personnage
+      </button>
+      <button
+        type="button"
+        class="death-modal__btn death-modal__btn--secondary"
+        @click="handleChangeHero"
+      >
+        Choisir un autre personnage
       </button>
     </div>
   </div>
