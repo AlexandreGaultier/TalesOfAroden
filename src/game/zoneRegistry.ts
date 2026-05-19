@@ -1,8 +1,10 @@
 import foretSylvestre from '../data/zones/foret-sylvestre.json'
+import montagnesAroden from '../data/zones/montagnes-aroden.json'
 import type { GameZone, SubZone, ZoneConnection } from '../types/game'
 
 const zones: Record<string, GameZone> = {
   [foretSylvestre.id]: foretSylvestre as GameZone,
+  [montagnesAroden.id]: montagnesAroden as GameZone,
 }
 
 export function getZone(zoneId: string): GameZone | undefined {

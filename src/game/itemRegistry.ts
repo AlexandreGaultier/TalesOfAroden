@@ -14,3 +14,12 @@ export function getAllItems(): ItemDef[] {
 export function getItemsByIds(ids: string[]): ItemDef[] {
   return ids.map((id) => getItem(id)).filter((i): i is ItemDef => i !== undefined)
 }
+
+export function itemHasFlag(item: ItemDef, flag: string): boolean {
+  return item.flags?.includes(flag) ?? false
+}
+
+export function isConsumableItem(itemId: string): boolean {
+  const item = getItem(itemId)
+  return item ? itemHasFlag(item, 'consumable') : false
+}

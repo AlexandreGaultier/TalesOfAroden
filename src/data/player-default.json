@@ -2,7 +2,7 @@
   "name": "Voyageur",
   "hp": 20,
   "maxHp": 20,
-  "gallions": 15,
+  "gallions": 20,
   "inventory": {},
   "flags": [],
   "currentZoneId": "foret-sylvestre",

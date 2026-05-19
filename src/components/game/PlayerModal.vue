@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { closeModal, playerVersion } from '../../game/gameSession'
+import { computed, ref } from 'vue'
+import { useConsumable } from '../../game/consumables'
+import { closeModal, notifyPlayerUpdate, playerVersion } from '../../game/gameSession'
 import {
-  getInventoryDetails,
+  getInventoryConsumables,
+  getInventoryItems,
   getInventoryTotalItems,
 } from '../../game/inventory'
+import { addJournal } from '../../game/journal'
 import { getPlayer, playerRevision } from '../../game/playerStore'
 import AppModal from './AppModal.vue'
 
@@ -14,10 +17,16 @@ const player = computed(() => {
   return getPlayer()
 })
 
-const inventory = computed(() => {
+const items = computed(() => {
   playerVersion.value
   playerRevision.value
-  return getInventoryDetails()
+  return getInventoryItems()
+})
+
+const consumables = computed(() => {
+  playerVersion.value
+  playerRevision.value
+  return getInventoryConsumables()
 })
 
 const totalItems = computed(() => {
@@ -26,10 +35,25 @@ const totalItems = computed(() => {
   return getInventoryTotalItems()
 })
 
+const useFeedback = ref('')
+
 const categoryLabel: Record<string, string> = {
   loot: 'Butin',
   gather: 'Récolte',
+  consumable: 'Consommable',
   unknown: 'Autre',
+}
+
+function handleUse(itemId: string): void {
+  const result = useConsumable(itemId)
+  useFeedback.value = result.message
+  if (result.ok) {
+    addJournal([result.message])
+    notifyPlayerUpdate()
+  }
+  setTimeout(() => {
+    if (useFeedback.value === result.message) useFeedback.value = ''
+  }, 2500)
 }
 </script>
 
@@ -50,21 +74,23 @@ const categoryLabel: Record<string, string> = {
       </div>
     </dl>
 
+    <p v-if="useFeedback" class="player-sheet__use-feedback">{{ useFeedback }}</p>
+
     <section class="player-sheet__inventory">
       <div class="player-sheet__inventory-head">
-        <h3>Inventaire</h3>
-        <span v-if="inventory.length" class="player-sheet__inventory-meta">
-          {{ inventory.length }} type(s) · {{ totalItems }} objet(s)
+        <h3>Objets</h3>
+        <span v-if="items.length" class="player-sheet__inventory-meta">
+          {{ items.length }} type(s)
         </span>
       </div>
 
-      <p v-if="!inventory.length" class="player-sheet__empty">
-        Votre sac est vide. Le butin des combats et vos trouvailles s'afficheront ici.
+      <p v-if="!items.length" class="player-sheet__empty">
+        Aucun butin ni récolte pour l'instant.
       </p>
 
       <ul v-else class="player-sheet__inv-full">
         <li
-          v-for="entry in inventory"
+          v-for="entry in items"
           :key="entry.itemId"
           class="player-inv-card"
           :class="`player-inv-card--${entry.category}`"
@@ -86,6 +112,49 @@ const categoryLabel: Record<string, string> = {
         </li>
       </ul>
     </section>
+
+    <section class="player-sheet__inventory player-sheet__consumables">
+      <div class="player-sheet__inventory-head">
+        <h3>Consommables</h3>
+        <span v-if="consumables.length" class="player-sheet__inventory-meta">
+          {{ consumables.reduce((s, e) => s + e.quantity, 0) }} unité(s)
+        </span>
+      </div>
+
+      <p v-if="!consumables.length" class="player-sheet__empty">
+        Aucun consommable. Les marchands en vendent parfois.
+      </p>
+
+      <ul v-else class="player-sheet__inv-full">
+        <li
+          v-for="entry in consumables"
+          :key="entry.itemId"
+          class="player-inv-card player-inv-card--consumable"
+        >
+          <div class="player-inv-card__head">
+            <span class="player-inv-card__qty">{{ entry.quantity }}×</span>
+            <span class="player-inv-card__name">{{ entry.name }}</span>
+          </div>
+          <p v-if="entry.description" class="player-inv-card__desc">
+            {{ entry.description }}
+          </p>
+          <div class="player-inv-card__actions">
+            <button
+              type="button"
+              class="btn-primary btn-use-consumable"
+              :disabled="player.hp >= player.maxHp && entry.flags.includes('heal_5')"
+              @click="handleUse(entry.itemId)"
+            >
+              Utiliser
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <p v-if="totalItems > 0" class="player-sheet__total">
+      Total sac : {{ totalItems }} objet(s)
+    </p>
 
     <section v-if="player.flags.length" class="player-sheet__flags">
       <h3>Drapeaux</h3>

@@ -7,7 +7,7 @@ import {
 } from './playerStore'
 
 export { addGallions }
-import { getItem } from './itemRegistry'
+import { getItem, isConsumableItem } from './itemRegistry'
 
 export function getGallions(): number {
   return getInventorySnapshot().gallions
@@ -36,9 +36,26 @@ export interface InventoryEntryView {
   quantity: number
   name: string
   description: string
-  category: 'loot' | 'gather' | 'unknown'
+  category: 'loot' | 'gather' | 'consumable' | 'unknown'
   sellPrice: number
   buyPrice: number
+  flags: string[]
+  isConsumable: boolean
+}
+
+function mapEntry(itemId: string, quantity: number): InventoryEntryView {
+  const def = getItem(itemId)
+  return {
+    itemId,
+    quantity,
+    name: def?.name ?? itemId,
+    description: def?.description ?? '',
+    category: (def?.category ?? 'unknown') as InventoryEntryView['category'],
+    sellPrice: def?.sellPrice ?? 0,
+    buyPrice: def?.buyPrice ?? 0,
+    flags: def?.flags ?? [],
+    isConsumable: isConsumableItem(itemId),
+  }
 }
 
 export function getInventoryEntries(): Pick<
@@ -55,19 +72,16 @@ export function getInventoryEntries(): Pick<
 export function getInventoryDetails(): InventoryEntryView[] {
   return Object.entries(getInventory())
     .filter(([, qty]) => qty > 0)
-    .map(([itemId, quantity]) => {
-      const def = getItem(itemId)
-      return {
-        itemId,
-        quantity,
-        name: def?.name ?? itemId,
-        description: def?.description ?? '',
-        category: (def?.category ?? 'unknown') as InventoryEntryView['category'],
-        sellPrice: def?.sellPrice ?? 0,
-        buyPrice: def?.buyPrice ?? 0,
-      }
-    })
+    .map(([itemId, quantity]) => mapEntry(itemId, quantity))
     .sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export function getInventoryItems(): InventoryEntryView[] {
+  return getInventoryDetails().filter((e) => !e.isConsumable)
+}
+
+export function getInventoryConsumables(): InventoryEntryView[] {
+  return getInventoryDetails().filter((e) => e.isConsumable)
 }
 
 export function getInventoryTotalItems(): number {

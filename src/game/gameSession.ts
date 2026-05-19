@@ -284,12 +284,40 @@ export function tryUseExit(subZoneId: string): string[] {
     return lines
   }
 
+  const targetZone = getZone(content.targetZoneId)
+  if (!targetZone) {
+    return ['Cette route n’est pas encore praticable.']
+  }
+
+  const arrivalId =
+    content.targetSubZoneId ?? targetZone.startingSubZoneId
+  const arrival = getSubZone(content.targetZoneId, arrivalId)
+  if (!arrival) {
+    return ['La destination est introuvable.']
+  }
+
+  setLocation(content.targetZoneId, arrivalId)
   const lines = [
     `Vous prenez la route vers ${content.targetZoneName}.`,
-    '(Changement de zone — prochaine étape.)',
+    `→ ${arrival.name}`,
   ]
   addJournal(lines)
+  bump()
+  closeModal()
   return lines
+}
+
+export function travelToZone(
+  targetZoneId: string,
+  targetSubZoneId?: string,
+): boolean {
+  const zone = getZone(targetZoneId)
+  if (!zone) return false
+  const subId = targetSubZoneId ?? zone.startingSubZoneId
+  if (!getSubZone(targetZoneId, subId)) return false
+  setLocation(targetZoneId, subId)
+  bump()
+  return true
 }
 
 export function clearJournal(): void {

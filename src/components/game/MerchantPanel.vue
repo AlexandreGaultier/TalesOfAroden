@@ -6,17 +6,12 @@ import {
   addItems,
   getGallions,
   getItemCount,
-  getInventoryDetails,
   removeItem,
 } from '../../game/inventory'
-import {
-  getOrCreateMerchantStock,
-  reduceSellOffer,
-  refreshMerchantStock,
-} from '../../game/merchantState'
+import { getOrCreateMerchantStock, reduceSellOffer } from '../../game/merchantState'
+import { getItem, isConsumableItem } from '../../game/itemRegistry'
 import { getPlayer, playerRevision } from '../../game/playerStore'
 import { notifyPlayerUpdate } from '../../game/gameSession'
-import { getItem, getItemsByIds } from '../../game/itemRegistry'
 import { addJournal } from '../../game/journal'
 
 const props = defineProps<{
@@ -28,7 +23,6 @@ const buyQty = ref<Record<string, number>>({})
 const feedback = ref('')
 
 const merchantLabel = computed(() => props.content.shopName)
-
 const zoneId = computed(() => getPlayer().currentZoneId)
 
 const stock = computed(() => {
@@ -41,33 +35,40 @@ const gallions = computed(() => {
   return getGallions()
 })
 
-const inventory = computed(() => {
-  playerRevision.value
-  return getInventoryDetails()
-})
-
-const catalogueGather = computed(() =>
-  getItemsByIds(props.content.gatherPool ?? []),
-)
-
-const catalogueLoot = computed(() =>
-  getItemsByIds(props.content.lootSellPool ?? []),
-)
-
+/** Ce que le marchand rachète (récoltes + butin de la zone). */
 const buyOffersVisible = computed(() =>
   stock.value.buyOffers.filter((line) => line.unitPrice > 0),
 )
 
-const sellOffersVisible = computed(() =>
-  stock.value.sellOffers.filter((line) => line.quantity > 0 && line.unitPrice > 0),
+const consumableSellOffers = computed(() =>
+  stock.value.sellOffers.filter(
+    (line) => line.unitPrice > 0 && (line.unlimited || isConsumableItem(line.itemId)),
+  ),
+)
+
+const lootSellOffers = computed(() =>
+  stock.value.sellOffers.filter(
+    (line) =>
+      line.quantity > 0 &&
+      line.unitPrice > 0 &&
+      !line.unlimited &&
+      !isConsumableItem(line.itemId),
+  ),
 )
 
 function getSellQty(itemId: string): number {
-  return sellQty.value[itemId] ?? 1
+  const owned = getItemCount(itemId)
+  if (owned < 1) return 1
+  const q = sellQty.value[itemId] ?? 1
+  return Math.min(Math.max(1, q), owned)
 }
 
 function setSellQty(itemId: string, value: number): void {
-  sellQty.value = { ...sellQty.value, [itemId]: Math.max(1, value) }
+  const owned = getItemCount(itemId)
+  sellQty.value = {
+    ...sellQty.value,
+    [itemId]: Math.min(Math.max(1, value), Math.max(1, owned)),
+  }
 }
 
 function getBuyQty(itemId: string, max: number): number {
@@ -82,6 +83,14 @@ function setBuyQty(itemId: string, value: number, max: number): void {
   }
 }
 
+function buyCost(itemId: string, unitPrice: number, maxStock: number): number {
+  return getBuyQty(itemId, maxStock) * unitPrice
+}
+
+function canAffordBuy(itemId: string, unitPrice: number, maxStock: number): boolean {
+  return gallions.value >= buyCost(itemId, unitPrice, maxStock)
+}
+
 function showFeedback(msg: string): void {
   feedback.value = msg
   setTimeout(() => {
@@ -90,8 +99,12 @@ function showFeedback(msg: string): void {
 }
 
 function handleSellToMerchant(itemId: string, unitPrice: number): void {
-  const qty = getSellQty(itemId)
   const owned = getItemCount(itemId)
+  if (owned < 1) {
+    showFeedback("Vous n'avez pas cet objet dans votre sac.")
+    return
+  }
+  const qty = getSellQty(itemId)
   if (qty > owned) {
     showFeedback('Quantité insuffisante dans votre sac.')
     return
@@ -109,6 +122,7 @@ function handleBuyFromMerchant(
   itemId: string,
   unitPrice: number,
   maxStock: number,
+  unlimited = false,
 ): void {
   const qty = getBuyQty(itemId, maxStock)
   const cost = qty * unitPrice
@@ -118,16 +132,13 @@ function handleBuyFromMerchant(
   }
   addGallions(-cost)
   addItems([{ itemId, quantity: qty }])
-  reduceSellOffer(zoneId.value, props.content.merchantId, itemId, qty)
+  if (!unlimited) {
+    reduceSellOffer(zoneId.value, props.content.merchantId, itemId, qty)
+  }
   const name = getItem(itemId)?.name ?? itemId
   addJournal([`Achat : ${qty}× ${name} pour ${cost} Gallions.`])
   showFeedback(`Achat effectué (−${cost} Gallions)`)
   notifyPlayerUpdate()
-}
-
-function handleRefreshStock(): void {
-  refreshMerchantStock(zoneId.value, props.content)
-  showFeedback('Étal renouvelé.')
 }
 </script>
 
@@ -139,51 +150,13 @@ function handleRefreshStock(): void {
 
     <p v-if="feedback" class="merchant-panel__feedback">{{ feedback }}</p>
 
-    <section class="merchant-panel__catalogue">
-      <h3>Catalogue de la zone</h3>
-      <p class="merchant-panel__catalogue-intro">
-        {{ merchantLabel }} pioche chaque jour
-        {{ content.stockSize ?? 5 }} offres parmi ces listes.
-      </p>
-
-      <div v-if="catalogueGather.length" class="merchant-catalogue-block">
-        <h4>Récoltes acceptées</h4>
-        <ul class="merchant-catalogue-list">
-          <li v-for="item in catalogueGather" :key="item.id" class="merchant-catalogue-item">
-            <span class="merchant-catalogue-item__name">{{ item.name }}</span>
-            <span class="merchant-catalogue-item__meta">
-              Rachat {{ item.sellPrice }} G · Achat {{ item.buyPrice }} G
-            </span>
-            <p v-if="item.description" class="merchant-catalogue-item__desc">
-              {{ item.description }}
-            </p>
-          </li>
-        </ul>
-      </div>
-
-      <div v-if="catalogueLoot.length" class="merchant-catalogue-block">
-        <h4>Butins en vente</h4>
-        <ul class="merchant-catalogue-list">
-          <li v-for="item in catalogueLoot" :key="item.id" class="merchant-catalogue-item">
-            <span class="merchant-catalogue-item__name">{{ item.name }}</span>
-            <span class="merchant-catalogue-item__meta">
-              Vente {{ item.buyPrice }} G · Rachat {{ item.sellPrice }} G
-            </span>
-            <p v-if="item.description" class="merchant-catalogue-item__desc">
-              {{ item.description }}
-            </p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
     <section class="merchant-panel__section">
       <div class="merchant-panel__section-head">
-        <h3>{{ merchantLabel }} achète (récoltes du jour)</h3>
-        <span class="merchant-panel__hint">Vendez vos objets de récolte</span>
+        <h3>{{ merchantLabel }} rachète</h3>
+        <span class="merchant-panel__hint">Butin et récoltes de la zone — dans votre sac</span>
       </div>
       <p v-if="!buyOffersVisible.length" class="merchant-panel__empty">
-        Aucune offre d'achat aujourd'hui. Renouvelez l'étal ou revenez plus tard.
+        Aucune offre de rachat pour le moment.
       </p>
       <ul v-else class="merchant-trade-list">
         <li
@@ -202,9 +175,10 @@ function handleRefreshStock(): void {
             <input
               type="number"
               min="1"
-              :max="getItemCount(line.itemId)"
+              :max="Math.max(1, getItemCount(line.itemId))"
               class="merchant-trade-row__qty"
               :value="getSellQty(line.itemId)"
+              :disabled="getItemCount(line.itemId) < 1"
               @input="setSellQty(line.itemId, Number(($event.target as HTMLInputElement).value))"
             />
             <button
@@ -220,17 +194,54 @@ function handleRefreshStock(): void {
       </ul>
     </section>
 
+    <section v-if="consumableSellOffers.length" class="merchant-panel__section">
+      <div class="merchant-panel__section-head">
+        <h3>Consommables</h3>
+        <span class="merchant-panel__hint">Toujours disponibles</span>
+      </div>
+      <ul class="merchant-trade-list">
+        <li
+          v-for="line in consumableSellOffers"
+          :key="`con-${line.itemId}`"
+          class="merchant-trade-row merchant-trade-row--consumable"
+        >
+          <div class="merchant-trade-row__info">
+            <span class="merchant-trade-row__name">{{ line.name }}</span>
+            <span class="merchant-trade-row__price">{{ line.unitPrice }} G / unité</span>
+          </div>
+          <div class="merchant-trade-row__actions">
+            <input
+              type="number"
+              min="1"
+              max="10"
+              class="merchant-trade-row__qty"
+              :value="getBuyQty(line.itemId, 10)"
+              @input="setBuyQty(line.itemId, Number(($event.target as HTMLInputElement).value), 10)"
+            />
+            <button
+              type="button"
+              class="btn-primary"
+              :disabled="!canAffordBuy(line.itemId, line.unitPrice, 10)"
+              @click="handleBuyFromMerchant(line.itemId, line.unitPrice, 10, true)"
+            >
+              Acheter
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+
     <section class="merchant-panel__section">
       <div class="merchant-panel__section-head">
-        <h3>{{ merchantLabel }} vend (butin du jour)</h3>
-        <span class="merchant-panel__hint">Loot de monstres de la zone</span>
+        <h3>{{ merchantLabel }} vend (butin)</h3>
+        <span class="merchant-panel__hint">Loot des monstres de la zone</span>
       </div>
-      <p v-if="!sellOffersVisible.length" class="merchant-panel__empty">
-        Rien en vitrine pour l'instant.
+      <p v-if="!lootSellOffers.length" class="merchant-panel__empty">
+        Rien d'autre en vitrine pour l'instant.
       </p>
       <ul v-else class="merchant-trade-list">
         <li
-          v-for="line in sellOffersVisible"
+          v-for="line in lootSellOffers"
           :key="`sell-${line.itemId}`"
           class="merchant-trade-row"
         >
@@ -252,7 +263,7 @@ function handleRefreshStock(): void {
             <button
               type="button"
               class="btn-primary"
-              :disabled="gallions < line.unitPrice"
+              :disabled="!canAffordBuy(line.itemId, line.unitPrice, line.quantity)"
               @click="handleBuyFromMerchant(line.itemId, line.unitPrice, line.quantity)"
             >
               Acheter
@@ -261,22 +272,5 @@ function handleRefreshStock(): void {
         </li>
       </ul>
     </section>
-
-    <section v-if="inventory.length" class="merchant-panel__inventory">
-      <h3>Votre sac</h3>
-      <ul class="merchant-panel__inv-full">
-        <li v-for="entry in inventory" :key="entry.itemId" class="merchant-panel__inv-row">
-          <span class="merchant-panel__inv-qty">{{ entry.quantity }}×</span>
-          <span>{{ entry.name }}</span>
-          <span v-if="entry.description" class="merchant-panel__inv-desc">
-            — {{ entry.description }}
-          </span>
-        </li>
-      </ul>
-    </section>
-
-    <button type="button" class="btn-secondary merchant-panel__refresh" @click="handleRefreshStock">
-      Renouveler l'étal ({{ content.stockSize ?? 5 }} offres aléatoires)
-    </button>
   </div>
 </template>

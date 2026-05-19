@@ -1,0 +1,76 @@
+{
+  "id": "montagnes-aroden",
+  "name": "Montagnes d'Aroden",
+  "description": "Sentiers escarpés, vent glacial et échos de mines abandonnées.",
+  "startingSubZoneId": "entree-sentier",
+  "subZones": [
+    {
+      "id": "entree-sentier",
+      "type": "narrative",
+      "name": "Sentier des Crêtes",
+      "narrative": "La forêt reste en contrebas. Ici, l'air mord les joues et les pierres blanchissent sous le ciel.",
+      "mapPosition": { "col": 1, "row": 2 },
+      "connections": [
+        { "targetId": "refuge-mineur", "travelLabel": "Vers le refuge des mineurs" },
+        { "targetId": "sortie-foret", "travelLabel": "Redescendre vers la forêt" }
+      ],
+      "content": {
+        "speaker": "Narrateur",
+        "lines": [
+          "Les Montagnes d'Aroden s'élèvent comme une muraille de glace et de granit.",
+          "Plus haut encore, on murmure qu'un passage mène vers des terres oubliées."
+        ]
+      }
+    },
+    {
+      "id": "refuge-mineur",
+      "type": "narrative",
+      "name": "Refuge des Mineurs",
+      "narrative": "Une bicoque de pierre, une cheminée qui tousse. Des outils rouillés pendent aux murs.",
+      "mapPosition": { "col": 2, "row": 2 },
+      "connections": [
+        { "targetId": "entree-sentier", "travelLabel": "Revenir au sentier" },
+        { "targetId": "passage-col", "travelLabel": "Grimper vers le col" }
+      ],
+      "content": {
+        "speaker": "Plaque gravée",
+        "lines": [
+          "« Ici reposent ceux qui ont cherché l'argent des étoiles — 1247. »",
+          "Le vent siffle dans les fissures du toit."
+        ]
+      }
+    },
+    {
+      "id": "passage-col",
+      "type": "narrative",
+      "name": "Col du Vent Gelé",
+      "narrative": "La vue porte sur des vallées de brume. Des corbeaux tournent au-dessus des corniches.",
+      "mapPosition": { "col": 3, "row": 1 },
+      "connections": [
+        { "targetId": "refuge-mineur", "travelLabel": "Redescendre au refuge" }
+      ],
+      "content": {
+        "speaker": "Narrateur",
+        "lines": [
+          "Le col est dégagé pour l'instant — mais l'hiver n'est jamais loin dans ces hauteurs.",
+          "D'autres routes s'ouvriront peut-être lorsque votre légende grandira."
+        ]
+      }
+    },
+    {
+      "id": "sortie-foret",
+      "type": "exit",
+      "name": "Descente — Forêt Sylvestre",
+      "narrative": "Un sentier en lacets replonge sous la limite des arbres. L'humidité de la forêt vous rappelle le chemin parcouru.",
+      "mapPosition": { "col": 1, "row": 3 },
+      "connections": [
+        { "targetId": "entree-sentier", "travelLabel": "Rester dans les montagnes" }
+      ],
+      "content": {
+        "targetZoneId": "foret-sylvestre",
+        "targetZoneName": "Forêt Sylvestre",
+        "targetSubZoneId": "sortie-montagnes"
+      }
+    }
+  ]
+}

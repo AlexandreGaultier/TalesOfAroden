@@ -116,5 +116,14 @@
     "buyPrice": 12,
     "category": "gather",
     "zones": ["foret-sylvestre"]
+  },
+  "potion-soin": {
+    "id": "potion-soin",
+    "name": "Potion de soin",
+    "description": "Une fiole ambrée qui restaure 5 points de vie.",
+    "sellPrice": 2,
+    "buyPrice": 6,
+    "category": "consumable",
+    "flags": ["consumable", "heal_5"]
   }
 }

@@ -65,6 +65,8 @@ export interface DungeonContent {
 export interface ExitContent {
   targetZoneId: string
   targetZoneName: string
+  /** Lieu d’arrivée ; sinon startingSubZoneId de la zone cible. */
+  targetSubZoneId?: string
   requiredFlag?: string
 }
 
@@ -72,12 +74,14 @@ export interface MerchantContent {
   merchantId: string
   shopName: string
   greeting: string
-  /** Objets de récolte que le marchand peut acheter (max 5 au hasard). */
-  gatherPool: string[]
-  /** Loot de monstres que le marchand peut vendre (max 5 au hasard). */
-  lootSellPool: string[]
+  /** Sous-ensemble optionnel des récoltes de la zone (sinon catalogue zone). */
+  gatherPool?: string[]
+  /** Sous-ensemble optionnel du butin de zone (sinon loot des monstres). */
+  lootSellPool?: string[]
   /** Nombre d'offres par côté (défaut 5). */
   stockSize?: number
+  /** Consommables toujours en vitrine (ex. potion-soin). */
+  consumableOffers?: string[]
 }
 
 export type SubZoneContent =

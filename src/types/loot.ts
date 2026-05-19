@@ -16,8 +16,10 @@ export interface ItemDef {
   sellPrice: number
   /** Ce que le joueur paie au marchand (achat). */
   buyPrice: number
-  category: 'loot' | 'gather'
+  category: 'loot' | 'gather' | 'consumable'
   zones?: string[]
+  /** Ex. consumable, heal_5 — pilote les effets à l’utilisation. */
+  flags?: string[]
 }
 
 export interface LootGrant {

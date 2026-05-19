@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import defaultSave from '../data/player-default.json'
 import type { LocationKey, PlayerSave } from '../types/game'
 import { locationKey } from '../types/game'
+import { clearMerchantStocksForZone } from './merchantState'
 import { persistActiveCharacter } from './saveStore'
 
 /** Incrémenté à chaque changement de PV / reset — réactivité UI. */
@@ -130,6 +131,9 @@ export function markExplored(zoneId: string, subZoneId: string): void {
 }
 
 export function setLocation(zoneId: string, subZoneId: string): void {
+  if (player.currentZoneId !== zoneId) {
+    clearMerchantStocksForZone(player.currentZoneId)
+  }
   player.currentZoneId = zoneId
   player.currentSubZoneId = subZoneId
   markExplored(zoneId, subZoneId)
@@ -143,6 +147,15 @@ export function applyDamage(amount: number): void {
 export function setHp(hp: number): void {
   player.hp = Math.min(player.maxHp, Math.max(0, hp))
   savePlayer()
+}
+
+/** Soigne jusqu'à amount PV ; retourne les PV effectivement gagnés. */
+export function healPlayer(amount: number): number {
+  const before = player.hp
+  player.hp = Math.min(player.maxHp, player.hp + amount)
+  const gained = player.hp - before
+  if (gained > 0) savePlayer()
+  return gained
 }
 
 export function isPlayerDead(): boolean {

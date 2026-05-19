@@ -252,25 +252,8 @@
         "merchantId": "korin",
         "shopName": "Babioles & Baumes de Korin",
         "greeting": "« Achète, voyageur — demain la forêt te prendra peut-être tout. »",
-        "gatherPool": [
-          "champignon-lune",
-          "seve-frene",
-          "mousse-etincelle",
-          "fleur-brume",
-          "ecorce-sylvestre",
-          "baume-voyageur"
-        ],
-        "lootSellPool": [
-          "griffe-loup",
-          "fourrure-loup",
-          "croc-loup",
-          "essence-ombre",
-          "fragment-tenebre",
-          "defense-sanglier",
-          "viande-sanglier",
-          "soie-ronce"
-        ],
-        "stockSize": 5
+        "stockSize": 5,
+        "consumableOffers": ["potion-soin"]
       }
     },
     {
@@ -284,7 +267,8 @@
       ],
       "content": {
         "targetZoneId": "montagnes-aroden",
-        "targetZoneName": "Les Montagnes"
+        "targetZoneName": "Les Montagnes d'Aroden",
+        "targetSubZoneId": "entree-sentier"
       }
     },
     {

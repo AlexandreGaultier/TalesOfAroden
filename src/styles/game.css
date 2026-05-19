@@ -469,6 +469,44 @@
   color: var(--game-muted);
 }
 
+.player-inv-card--consumable {
+  border-left: 3px solid #4a7eb5;
+}
+
+.player-inv-card__actions {
+  margin-top: 0.5rem;
+}
+
+.btn-use-consumable {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.player-sheet__consumables {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--game-border);
+}
+
+.player-sheet__use-feedback {
+  margin: 0.5rem 0 0;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(45, 106, 79, 0.12);
+  color: var(--game-accent);
+  font-size: 0.85rem;
+}
+
+.player-sheet__total {
+  margin: 0.75rem 0 0;
+  font-size: 0.78rem;
+  color: var(--game-muted);
+}
+
+.merchant-trade-row--consumable {
+  border-color: rgba(74, 126, 181, 0.35);
+}
+
 /* Marchand itinérant */
 .merchant-panel__wallet {
   margin: 0 0 0.75rem;
