@@ -2,6 +2,7 @@
 defineProps<{
   title: string
   wide?: boolean
+  extraWide?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -13,7 +14,10 @@ const emit = defineEmits<{
   <div class="modal-backdrop" @click.self="emit('close')">
     <div
       class="modal-panel"
-      :class="{ 'modal-panel--wide': wide }"
+      :class="{
+        'modal-panel--wide': wide && !extraWide,
+        'modal-panel--extra-wide': extraWide,
+      }"
       role="dialog"
       aria-modal="true"
     >

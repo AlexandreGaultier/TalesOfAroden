@@ -18,6 +18,49 @@ function ensureDialoguePicks(): Record<string, string[]> {
   return player.dialoguePicks as Record<string, string[]>
 }
 
+function normalizePlayer(p: PlayerSave): void {
+  if (typeof p.gallions !== 'number') p.gallions = 0
+  if (!p.inventory || typeof p.inventory !== 'object') p.inventory = {}
+}
+
+export function getInventorySnapshot(): {
+  gallions: number
+  inventory: Record<string, number>
+} {
+  return { gallions: player.gallions, inventory: { ...player.inventory } }
+}
+
+export function addGallions(amount: number): void {
+  player.gallions = Math.max(0, player.gallions + amount)
+  savePlayer()
+}
+
+export function addInventoryItems(
+  entries: { itemId: string; quantity: number }[],
+): void {
+  if (!entries.length) return
+  for (const { itemId, quantity } of entries) {
+    if (quantity <= 0) continue
+    player.inventory[itemId] = (player.inventory[itemId] ?? 0) + quantity
+  }
+  savePlayer()
+}
+
+export function removeInventoryItem(itemId: string, quantity: number): boolean {
+  if (quantity <= 0) return true
+  const current = player.inventory[itemId] ?? 0
+  if (current < quantity) return false
+  const next = current - quantity
+  if (next <= 0) delete player.inventory[itemId]
+  else player.inventory[itemId] = next
+  savePlayer()
+  return true
+}
+
+export function getItemCount(itemId: string): number {
+  return player.inventory[itemId] ?? 0
+}
+
 let player: PlayerSave = structuredClone(defaultSave) as PlayerSave
 
 export function getPlayer(): Readonly<PlayerSave> {
@@ -27,6 +70,7 @@ export function getPlayer(): Readonly<PlayerSave> {
 export function loadPlayerData(data: PlayerSave): void {
   player = structuredClone(data) as PlayerSave
   if (!player.dialoguePicks) player.dialoguePicks = {}
+  normalizePlayer(player)
   bumpPlayer()
 }
 
@@ -51,6 +95,7 @@ export function resetPlayer(keepName?: string): void {
   player = structuredClone(defaultSave) as PlayerSave
   if (keepName) player.name = keepName
   if (!player.dialoguePicks) player.dialoguePicks = {}
+  normalizePlayer(player)
   persistActiveCharacter()
   bumpPlayer()
 }

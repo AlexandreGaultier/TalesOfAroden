@@ -5,6 +5,8 @@ import type {
   CombatLogKind,
   CombatSession,
 } from '../types/combat'
+import type { LootGrant } from '../types/loot'
+import { applyLootGrants, formatLootMessage, rollLootTable } from '../game/loot'
 import type { CombatContent } from '../types/game'
 import {
   INITIATIVE_DURATION_MS,
@@ -30,6 +32,12 @@ export const heroDef = ref<ReturnType<typeof getHero>>(undefined)
 export const enemyDef = ref<ReturnType<typeof getEnemy>>(undefined)
 
 export const isCombatOpen = computed(() => session.value !== null)
+
+export const isCombatEnded = computed(
+  () => session.value?.phase === 'ended',
+)
+
+export const lastCombatLoot = ref<LootGrant[]>([])
 
 export const matchingAbilities = computed((): CombatAbility[] => {
   const s = session.value
@@ -274,7 +282,21 @@ function endCombat(winner: 'hero' | 'enemy'): void {
     setCombatVisitSafe(s.context.subZoneId, true)
     addJournal([`Victoire contre ${s.enemy.name} !`])
     pushLog(log('result', 'Victoire !'))
+
+    const enemy = enemyDef.value
+    if (enemy?.loot?.length) {
+      const rolled = rollLootTable(enemy.loot)
+      lastCombatLoot.value = applyLootGrants(rolled)
+      if (lastCombatLoot.value.length) {
+        const lootMsg = formatLootMessage(lastCombatLoot.value)
+        addJournal([`Butin : ${lootMsg}`])
+        pushLog(log('system', `Butin récupéré : ${lootMsg}`))
+      }
+    } else {
+      lastCombatLoot.value = []
+    }
   } else {
+    lastCombatLoot.value = []
     setHp(0)
     addJournal([`Défaite face à ${s.enemy.name}…`])
     pushLog(log('result', 'Défaite…'))
@@ -289,11 +311,18 @@ function endCombat(winner: 'hero' | 'enemy'): void {
   }
 }
 
+/** Boutons de test — force la fin du combat. */
+export function debugEndCombat(winner: 'hero' | 'enemy'): void {
+  if (!session.value || session.value.phase === 'ended') return
+  endCombat(winner)
+}
+
 export function closeCombat(): void {
   const s = session.value
   if (s && s.winner === 'hero') {
     setHp(session.value!.hero.hp)
   }
+  lastCombatLoot.value = []
   session.value = null
   heroDef.value = undefined
   enemyDef.value = undefined

@@ -39,6 +39,8 @@ function migrateLegacySave(registry: SaveRegistry): SaveRegistry {
   try {
     const player = JSON.parse(raw) as PlayerSave
     if (!player.dialoguePicks) player.dialoguePicks = {}
+    if (typeof player.gallions !== 'number') player.gallions = 0
+    if (!player.inventory) player.inventory = {}
     const slot: CharacterSave = {
       id: `char-${Date.now()}`,
       player,

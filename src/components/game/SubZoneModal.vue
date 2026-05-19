@@ -29,6 +29,7 @@ import {
 } from '../../game/gameSession'
 import { ZONE_TYPE_LABELS } from '../../game/zoneTypes'
 import AppModal from './AppModal.vue'
+import MerchantPanel from './MerchantPanel.vue'
 import DialoguePanel from './DialoguePanel.vue'
 import DiceRollButton from './DiceRollButton.vue'
 import RollResult from './RollResult.vue'
@@ -93,6 +94,15 @@ const combatTitle = computed(() => {
   return rematch ? combatContent.value.rematchTitle : combatContent.value.title
 })
 
+const merchantContent = computed(() => {
+  if (!subZone.value || !isMerchantContent(subZone.value.content)) return null
+  return subZone.value.content
+})
+
+const showMerchantCommerce = computed(
+  () => !!merchantContent.value && atThisPlace.value,
+)
+
 const showActionSection = computed(() => {
   if (!subZone.value) return false
   if (isCombatContent(subZone.value.content)) {
@@ -105,7 +115,6 @@ const showActionSection = computed(() => {
   }
   if (isDialogueContent(subZone.value.content) && atThisPlace.value) return true
   if (isExitContent(subZone.value.content)) return true
-  if (isMerchantContent(subZone.value.content) && atThisPlace.value) return true
   return false
 })
 
@@ -149,6 +158,7 @@ function handleGoHere(): void {
     v-if="subZone"
     :title="subZone.name"
     wide
+    :extra-wide="!!merchantContent"
     @close="closeModal"
   >
     <div class="subzone-modal" :data-zone-type="subZone.type">
@@ -255,10 +265,22 @@ function handleGoHere(): void {
           <p v-if="exitMessage" class="subzone-modal__result">{{ exitMessage }}</p>
         </template>
 
-        <template v-else-if="isMerchantContent(subZone.content)">
-          <p class="subzone-modal__muted">Boutique — à venir.</p>
-        </template>
       </section>
+
+      <section
+        v-if="showMerchantCommerce && merchantContent"
+        class="subzone-modal__commerce"
+      >
+        <span class="subzone-modal__action-label">Commerce</span>
+        <MerchantPanel :content="merchantContent" />
+      </section>
+
+      <p
+        v-else-if="merchantContent && !atThisPlace"
+        class="subzone-modal__muted subzone-modal__commerce-hint"
+      >
+        Rendez-vous sur ce lieu pour commercer avec {{ merchantContent.shopName }}.
+      </p>
 
       <section
         v-if="showPaths && travelOptions.length"

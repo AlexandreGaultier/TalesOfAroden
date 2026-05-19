@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import {
-  closeCombat,
   confirmPlayerRoll,
+  debugEndCombat,
   enemyDef,
   enemyMatchingAbilities,
   heroDef,
@@ -13,7 +13,6 @@ import {
   session,
   toggleDieToReroll,
 } from '../../combat/combatStore'
-import { notifyPlayerUpdate, isPlayerDead } from '../../game/gameSession'
 import CombatInitiativeRoll from './CombatInitiativeRoll.vue'
 import { countSymbolsFromDice, formatSymbolCounts } from '../../combat/symbols'
 import AbilityReferenceList from './AbilityReferenceList.vue'
@@ -39,12 +38,12 @@ const phase = computed(() => s.value?.phase ?? 'ended')
 const turnLabel = computed(() => {
   if (!s.value) return ''
   if (phase.value === 'initiative') return 'Initiative'
-  if (phase.value === 'ended') {
-    return s.value.winner === 'hero' ? 'Victoire' : 'Défaite'
-  }
+  if (phase.value === 'ended') return 'Terminé'
   if (s.value.activeSide === 'hero') return 'Votre tour'
   return `Tour — ${s.value.enemy.name}`
 })
+
+const showDebugTools = import.meta.env.DEV
 
 const turnSide = computed((): 'hero' | 'enemy' | 'neutral' => {
   if (phase.value === 'initiative' || phase.value === 'ended') return 'neutral'
@@ -85,12 +84,6 @@ const hasDiceSelectedForReroll = computed(
   () => s.value?.toReroll.some(Boolean) ?? false,
 )
 
-function handleClose(): void {
-  if (s.value?.phase === 'ended') {
-    closeCombat()
-    notifyPlayerUpdate()
-  }
-}
 </script>
 
 <template>
@@ -100,14 +93,22 @@ function handleClose(): void {
         <p class="combat-overlay__eyebrow">Combat de dés</p>
         <h2>{{ s.context.introTitle }}</h2>
       </div>
-      <button
-        v-if="phase === 'ended' && !isPlayerDead"
-        type="button"
-        class="combat-overlay__close"
-        @click="handleClose"
-      >
-        Fermer
-      </button>
+      <div v-if="showDebugTools && phase !== 'ended'" class="combat-overlay__debug">
+        <button
+          type="button"
+          class="combat-overlay__debug-btn combat-overlay__debug-btn--win"
+          @click="debugEndCombat('hero')"
+        >
+          Test victoire
+        </button>
+        <button
+          type="button"
+          class="combat-overlay__debug-btn combat-overlay__debug-btn--lose"
+          @click="debugEndCombat('enemy')"
+        >
+          Test défaite
+        </button>
+      </div>
     </header>
 
     <div class="combat-overlay__body">
@@ -278,15 +279,9 @@ function handleClose(): void {
             </p>
           </div>
 
-          <div v-else-if="phase === 'ended'" class="combat-phase combat-phase--end">
-            <p
-              v-if="s.winner === 'hero'"
-              class="combat-end combat-end--win"
-            >
-              Victoire !
-            </p>
-            <p v-else class="combat-end combat-end--lose">Défaite…</p>
-          </div>
+          <p v-else-if="phase === 'ended'" class="combat-phase__hint combat-phase__hint--ended">
+            Combat terminé — consultez le récapitulatif.
+          </p>
         </section>
 
         <div class="combat-abilities-grid">

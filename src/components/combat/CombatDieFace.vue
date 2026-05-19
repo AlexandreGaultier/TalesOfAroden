@@ -21,7 +21,7 @@ const label = computed(() => SYMBOL_META[symbol.value].label)
       { 'combat-die-face--selected': selected },
       { 'combat-die-face--interactive': interactive },
     ]"
-    :title="`${label} (face ${face})`"
+    :title="label"
     :aria-label="label"
   >
     <span class="combat-die-face__glyph" aria-hidden="true">
@@ -29,6 +29,5 @@ const label = computed(() => SYMBOL_META[symbol.value].label)
       <template v-else-if="symbol === 'shield'">🛡</template>
       <template v-else>✦</template>
     </span>
-    <span class="combat-die-face__face-num">{{ face }}</span>
   </span>
 </template>

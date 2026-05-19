@@ -1,3 +1,5 @@
+import type { LootTableEntry } from './loot'
+
 /** Symboles de dé : 1–3 épée, 4–5 bouclier, 6 aura. */
 export type DieSymbol = 'sword' | 'shield' | 'aura'
 
@@ -19,6 +21,7 @@ export interface CombatantDef {
   name: string
   maxHp: number
   abilities: CombatAbility[]
+  loot?: LootTableEntry[]
 }
 
 export interface FighterState {

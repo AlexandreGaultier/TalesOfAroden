@@ -1,0 +1,120 @@
+{
+  "griffe-loup": {
+    "id": "griffe-loup",
+    "name": "Griffe de loup",
+    "description": "Acérée et encore tiède — trophée de la meute.",
+    "sellPrice": 5,
+    "buyPrice": 10,
+    "category": "loot"
+  },
+  "fourrure-loup": {
+    "id": "fourrure-loup",
+    "name": "Fourrure de loup",
+    "description": "Dense et grise, prisée des tailleurs du nord.",
+    "sellPrice": 7,
+    "buyPrice": 14,
+    "category": "loot"
+  },
+  "croc-loup": {
+    "id": "croc-loup",
+    "name": "Croc de loup",
+    "description": "Jaune pâle, parfait pour les amulettes.",
+    "sellPrice": 4,
+    "buyPrice": 9,
+    "category": "loot"
+  },
+  "essence-ombre": {
+    "id": "essence-ombre",
+    "name": "Essence d'ombre",
+    "description": "Vapeur noire capturée dans un flacon de verre fumé.",
+    "sellPrice": 8,
+    "buyPrice": 16,
+    "category": "loot"
+  },
+  "fragment-tenebre": {
+    "id": "fragment-tenebre",
+    "name": "Fragment de ténèbre",
+    "description": "Éclat froid qui ne reflète aucune lumière.",
+    "sellPrice": 6,
+    "buyPrice": 12,
+    "category": "loot"
+  },
+  "defense-sanglier": {
+    "id": "defense-sanglier",
+    "name": "Défense de sanglier",
+    "description": "Courbe et lourde — bonne pour graver des runes.",
+    "sellPrice": 9,
+    "buyPrice": 18,
+    "category": "loot"
+  },
+  "viande-sanglier": {
+    "id": "viande-sanglier",
+    "name": "Viande de sanglier",
+    "description": "Fumée ou rôtie, elle nourrit une soirée entière.",
+    "sellPrice": 4,
+    "buyPrice": 8,
+    "category": "loot"
+  },
+  "soie-ronce": {
+    "id": "soie-ronce",
+    "name": "Soie de ronce",
+    "description": "Fil résistant arraché aux lianes du fourré.",
+    "sellPrice": 5,
+    "buyPrice": 10,
+    "category": "loot"
+  },
+  "champignon-lune": {
+    "id": "champignon-lune",
+    "name": "Champignon de lune",
+    "description": "Chapeau argenté qui brille faiblement la nuit.",
+    "sellPrice": 3,
+    "buyPrice": 6,
+    "category": "gather",
+    "zones": ["foret-sylvestre"]
+  },
+  "seve-frene": {
+    "id": "seve-frene",
+    "name": "Sève de frêne",
+    "description": "Sucré et visqueux — base de baumes courants.",
+    "sellPrice": 4,
+    "buyPrice": 8,
+    "category": "gather",
+    "zones": ["foret-sylvestre"]
+  },
+  "mousse-etincelle": {
+    "id": "mousse-etincelle",
+    "name": "Mousse étincelle",
+    "description": "Brille au moindre frottement — les érmites en font des torches.",
+    "sellPrice": 5,
+    "buyPrice": 10,
+    "category": "gather",
+    "zones": ["foret-sylvestre"]
+  },
+  "fleur-brume": {
+    "id": "fleur-brume",
+    "name": "Fleur de brume",
+    "description": "Pétales pâles qui ne fanent jamais complètement.",
+    "sellPrice": 6,
+    "buyPrice": 12,
+    "category": "gather",
+    "zones": ["foret-sylvestre"]
+  },
+  "ecorce-sylvestre": {
+    "id": "ecorce-sylvestre",
+    "name": "Écorce sylvestre",
+    "description": "Pelée avec soin sur un chêne centenaire.",
+    "sellPrice": 3,
+    "buyPrice": 7,
+    "category": "gather",
+    "zones": ["foret-sylvestre"]
+  },
+  "baume-voyageur": {
+    "id": "baume-voyageur",
+    "name": "Baume du voyageur",
+    "description": "Odeur de pin — restaure un peu de vitalité (cosmétique).",
+    "sellPrice": 0,
+    "buyPrice": 12,
+    "category": "gather",
+    "zones": ["foret-sylvestre"]
+  }
+}

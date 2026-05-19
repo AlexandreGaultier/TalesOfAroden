@@ -520,14 +520,10 @@
 }
 
 .combat-die-face__glyph {
-  font-size: 1.55rem;
+  font-size: 1.65rem;
   line-height: 1;
-}
-
-.combat-die-face__face-num {
-  font-size: 0.6rem;
-  font-family: ui-monospace, Consolas, monospace;
-  color: #6b6560;
+  color: #ffffff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
 }
 
 .combat-die-face--sword {
@@ -544,7 +540,7 @@
 }
 
 .combat-die-face--aura .combat-die-face__glyph {
-  color: #e0c8ff;
+  color: #ffffff;
 }
 
 /* Choix capacités */
@@ -882,6 +878,191 @@
 .combat-overlay .btn-secondary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.combat-phase__hint--ended {
+  margin: 0;
+  text-align: center;
+  font-style: italic;
+  color: #9a948c;
+}
+
+/* Debug (dev) */
+.combat-overlay__debug {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.combat-overlay__debug-btn {
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #c9c4bc;
+  cursor: pointer;
+}
+
+.combat-overlay__debug-btn--win:hover {
+  border-color: #52b788;
+  color: #7dffb8;
+}
+
+.combat-overlay__debug-btn--lose:hover {
+  border-color: #e06060;
+  color: #ff9a9a;
+}
+
+/* Modal résultat combat */
+.combat-result-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.combat-result-modal__panel {
+  width: 100%;
+  max-width: 22rem;
+  padding: 1.35rem 1.25rem;
+  border-radius: 14px;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: #1e1c18;
+  color: #ece8e1;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.combat-result-modal__panel--win {
+  border-color: rgba(82, 183, 136, 0.55);
+  box-shadow: 0 0 32px rgba(82, 183, 136, 0.2);
+}
+
+.combat-result-modal__panel--lose {
+  border-color: rgba(179, 58, 58, 0.55);
+  box-shadow: 0 0 32px rgba(179, 58, 58, 0.15);
+}
+
+.combat-result-modal__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #9a948c;
+}
+
+.combat-result-modal__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.combat-result-modal__panel--win .combat-result-modal__title {
+  color: #7dffb8;
+}
+
+.combat-result-modal__panel--lose .combat-result-modal__title {
+  color: #ff9a9a;
+}
+
+.combat-result-modal__text {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #c9c4bc;
+}
+
+.combat-result-modal__enemy {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  color: #9a948c;
+}
+
+.combat-result-modal__btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: #52b788;
+  color: #0d1f14;
+  cursor: pointer;
+  min-width: 8rem;
+}
+
+.combat-result-modal__btn:hover {
+  filter: brightness(1.08);
+}
+
+.combat-result-modal__loot-section {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(212, 196, 168, 0.2);
+}
+
+.combat-result-modal__loot-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #d4c4a8;
+}
+
+.combat-result-modal__loot-empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(212, 196, 168, 0.75);
+  font-style: italic;
+}
+
+.combat-result-modal__loot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.combat-loot-item {
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.combat-loot-item__qty {
+  font-weight: 700;
+  color: #e8c547;
+  margin-right: 0.25rem;
+}
+
+.combat-loot-item__name {
+  font-weight: 600;
+  color: #f5f0e6;
+}
+
+.combat-loot-item__desc {
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(212, 196, 168, 0.85);
+  line-height: 1.35;
+}
+
+.combat-result-modal__loot-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(212, 196, 168, 0.65);
 }
 
 @media (max-width: 960px) {

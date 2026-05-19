@@ -42,6 +42,7 @@ import {
 } from './saveStore'
 import { areNeighbors, getNeighbors, getSubZone, getZone } from './zoneRegistry'
 
+import { clearAllMerchantStocks } from './merchantState'
 import { addJournal, clearJournal as resetJournal, journal } from './journal'
 
 export { journal }
@@ -302,6 +303,7 @@ export function restartGame(): void {
   resetAllCombatVisits()
   resetAllRollStates()
   resetJournal()
+  clearAllMerchantStocks()
   closeModal()
   persistActiveCharacter()
   bump()

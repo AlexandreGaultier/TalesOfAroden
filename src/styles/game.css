@@ -269,6 +269,10 @@
   max-width: 560px;
 }
 
+.modal-panel--extra-wide {
+  max-width: min(720px, 96vw);
+}
+
 .modal-panel__header {
   display: flex;
   align-items: center;
@@ -353,6 +357,328 @@
   font-size: 0.9rem;
 }
 
+.player-sheet__inventory {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--game-border);
+}
+
+.player-sheet__inventory h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--game-muted);
+}
+
+.player-sheet__inv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.player-sheet__inv-list li {
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--game-border);
+}
+
+.player-sheet__inv-qty {
+  font-weight: 700;
+  color: var(--game-accent);
+  margin-right: 0.25rem;
+}
+
+.player-sheet__inventory-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.player-sheet__inventory-meta {
+  font-size: 0.75rem;
+  color: var(--game-muted);
+}
+
+.player-sheet__inv-full {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: min(50vh, 420px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.player-inv-card {
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--game-border);
+  border-radius: 8px;
+  background: var(--game-bg);
+}
+
+.player-inv-card--loot {
+  border-left: 3px solid #8b5a2b;
+}
+
+.player-inv-card--gather {
+  border-left: 3px solid var(--game-accent);
+}
+
+.player-inv-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.player-inv-card__qty {
+  font-weight: 700;
+  color: var(--game-accent);
+}
+
+.player-inv-card__name {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.player-inv-card__tag {
+  margin-left: auto;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--game-muted);
+}
+
+.player-inv-card__desc {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: var(--game-muted);
+  line-height: 1.4;
+}
+
+.player-inv-card__prices {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  color: var(--game-muted);
+}
+
+/* Marchand itinérant */
+.merchant-panel__wallet {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: var(--game-text);
+}
+
+.merchant-panel__feedback {
+  margin: 0 0 0.75rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(45, 106, 79, 0.12);
+  color: var(--game-accent);
+  font-size: 0.85rem;
+}
+
+.merchant-panel__section {
+  margin-bottom: 1.25rem;
+}
+
+.merchant-panel__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.merchant-panel__section h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.merchant-panel__hint {
+  font-size: 0.75rem;
+  color: var(--game-muted);
+}
+
+.merchant-panel__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--game-muted);
+  font-style: italic;
+}
+
+.merchant-trade-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.merchant-trade-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--game-border);
+  border-radius: 8px;
+  background: var(--game-bg);
+}
+
+.merchant-trade-row__name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.merchant-trade-row__price {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--game-muted);
+}
+
+.merchant-trade-row__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.merchant-trade-row__qty {
+  width: 3rem;
+  font: inherit;
+  padding: 0.35rem 0.4rem;
+  border: 1px solid var(--game-border);
+  border-radius: 6px;
+  background: var(--game-surface);
+}
+
+.merchant-panel__inventory {
+  margin-bottom: 1rem;
+  padding: 0.65rem 0;
+  border-top: 1px dashed var(--game-border);
+}
+
+.merchant-panel__inventory h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--game-muted);
+}
+
+.merchant-panel__inv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.82rem;
+  color: var(--game-muted);
+}
+
+.merchant-panel__refresh {
+  width: 100%;
+}
+
+.merchant-panel__catalogue {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  border: 1px dashed var(--game-border);
+  border-radius: 8px;
+  background: rgba(45, 106, 79, 0.04);
+}
+
+.merchant-panel__catalogue h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+}
+
+.merchant-panel__catalogue-intro {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: var(--game-muted);
+  line-height: 1.4;
+}
+
+.merchant-catalogue-block {
+  margin-bottom: 0.75rem;
+}
+
+.merchant-catalogue-block h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--game-muted);
+}
+
+.merchant-catalogue-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.merchant-catalogue-item {
+  padding: 0.45rem 0.55rem;
+  border-radius: 6px;
+  background: var(--game-surface);
+  border: 1px solid var(--game-border);
+}
+
+.merchant-catalogue-item__name {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.merchant-catalogue-item__meta {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--game-muted);
+  margin-top: 0.15rem;
+}
+
+.merchant-catalogue-item__desc {
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+  color: var(--game-muted);
+  line-height: 1.35;
+}
+
+.merchant-panel__inv-full {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.merchant-panel__inv-row {
+  font-size: 0.82rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--game-border);
+}
+
+.merchant-panel__inv-qty {
+  font-weight: 700;
+  color: var(--game-accent);
+  margin-right: 0.2rem;
+}
+
+.merchant-panel__inv-desc {
+  color: var(--game-muted);
+}
+
 /* Journal modal */
 .journal-modal__actions {
   margin-bottom: 1rem;
@@ -378,6 +704,7 @@
 /* Modale sous-zone — récit / action / chemins */
 .subzone-modal__story,
 .subzone-modal__action,
+.subzone-modal__commerce,
 .subzone-modal__travel {
   margin-bottom: 1rem;
   padding: 1rem 1.1rem;
@@ -389,11 +716,17 @@
   background: var(--game-bg);
 }
 
-.subzone-modal__action {
+.subzone-modal__action,
+.subzone-modal__commerce {
   background: var(--game-surface);
   border-color: var(--game-accent);
   border-width: 1px;
   box-shadow: inset 0 0 0 1px rgba(45, 106, 79, 0.12);
+}
+
+.subzone-modal__commerce-hint {
+  margin: 0 0 1rem;
+  padding: 0 0.25rem;
 }
 
 .subzone-modal__travel {

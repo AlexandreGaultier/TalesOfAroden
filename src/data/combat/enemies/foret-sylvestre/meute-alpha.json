@@ -2,6 +2,23 @@
   "id": "meute-alpha",
   "name": "Loup alpha et sa meute",
   "maxHp": 18,
+  "loot": [
+    {
+      "itemId": "griffe-loup",
+      "dropChance": 0.8,
+      "quantityChances": { "1": 0.8, "2": 0.4, "3": 0.1, "4": 0 }
+    },
+    {
+      "itemId": "fourrure-loup",
+      "dropChance": 0.65,
+      "quantityChances": { "1": 0.75, "2": 0.35, "3": 0.1, "4": 0 }
+    },
+    {
+      "itemId": "croc-loup",
+      "dropChance": 0.5,
+      "quantityChances": { "1": 0.85, "2": 0.3, "3": 0.05, "4": 0 }
+    }
+  ],
   "abilities": [
     {
       "id": "hurlement",

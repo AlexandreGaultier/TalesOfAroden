@@ -2,6 +2,23 @@
   "id": "sanglier-roncecoeur",
   "name": "Sanglier de Roncecœur",
   "maxHp": 22,
+  "loot": [
+    {
+      "itemId": "defense-sanglier",
+      "dropChance": 0.7,
+      "quantityChances": { "1": 0.7, "2": 0.25, "3": 0.05, "4": 0 }
+    },
+    {
+      "itemId": "viande-sanglier",
+      "dropChance": 0.85,
+      "quantityChances": { "1": 0.9, "2": 0.5, "3": 0.15, "4": 0 }
+    },
+    {
+      "itemId": "soie-ronce",
+      "dropChance": 0.45,
+      "quantityChances": { "1": 0.8, "2": 0.35, "3": 0.1, "4": 0 }
+    }
+  ],
   "abilities": [
     {
       "id": "charge",
@@ -20,7 +37,7 @@
       "priority": 80
     },
     {
-      "id": "piétinement",
+      "id": "pietinement",
       "name": "Piétinement",
       "description": "Trois boucliers.",
       "pattern": { "shield": 3 },

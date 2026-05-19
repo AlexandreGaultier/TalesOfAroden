@@ -72,6 +72,12 @@ export interface MerchantContent {
   merchantId: string
   shopName: string
   greeting: string
+  /** Objets de récolte que le marchand peut acheter (max 5 au hasard). */
+  gatherPool: string[]
+  /** Loot de monstres que le marchand peut vendre (max 5 au hasard). */
+  lootSellPool: string[]
+  /** Nombre d'offres par côté (défaut 5). */
+  stockSize?: number
 }
 
 export type SubZoneContent =
@@ -106,6 +112,9 @@ export interface PlayerSave {
   name: string
   hp: number
   maxHp: number
+  gallions: number
+  /** itemId → quantité */
+  inventory: Record<string, number>
   flags: string[]
   currentZoneId: string
   currentSubZoneId: string

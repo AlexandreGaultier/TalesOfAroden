@@ -2,6 +2,8 @@
   "name": "Voyageur",
   "hp": 20,
   "maxHp": 20,
+  "gallions": 15,
+  "inventory": {},
   "flags": [],
   "currentZoneId": "foret-sylvestre",
   "currentSubZoneId": "sanctuaire-eveil",
